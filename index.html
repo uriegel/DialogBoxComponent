@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Dialog Box Component</title>
+        <base href="/vtc/" /> 
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/themes/blue.css">
+        <link rel="stylesheet" href="styles/themes/adwaita.css">
+        <link rel="stylesheet" href="styles/themes/adwaita-dark.css">
+    </head>
+
+    <body class="themeBlue">
+        <div>
+            <select id="themeChooser">
+                <option>Blue</option>
+                <option>Adwaita</option>
+                <option>Adwaita dark</option>
+            </select>
+            <button id="changeCols">Change Columns</button>
+        </div>
+
+        <div class="tableContainer" >
+            Test Test Test
+            <virtual-table-component></virtual-table-component>
+        </div>
+
+        <script type="module" src="index.js"></script>
+    </body>
+</html>
