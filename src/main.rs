@@ -6,7 +6,7 @@ use warp::{Filter, Reply, fs::File, http::HeaderValue, hyper::{Body, HeaderMap, 
 #[tokio::main]
 async fn main() {
     let port = 9865;
-    println!("Running test server on http://localhost:{}/vtc", port);
+    println!("Running test server on http://localhost:{}/dbc", port);
 
     fn add_headers(reply: File)->Response<Body> {
         let mut header_map = HeaderMap::new();
@@ -22,7 +22,7 @@ async fn main() {
     }
 
     let route = 
-        warp::path("vtc")
+        warp::path("dbc")
         .and(warp::fs::dir("."))
         .map(add_headers);
 
