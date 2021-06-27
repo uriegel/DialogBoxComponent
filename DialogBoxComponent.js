@@ -124,6 +124,9 @@ class DialogBoxComponent extends HTMLElement {
         // TODO input
         // TODO Slot
         // TODO return struct 
+        // TODO Slide left
+        // TODO Slide right
+        // TODO Fullscreen?
 
         return new Promise(async res => {
             this.dialogroot.classList.remove("none")
