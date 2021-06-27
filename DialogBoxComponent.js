@@ -1,3 +1,7 @@
+async function nextTick() {
+    return new Promise(res => setTimeout(() => res()))
+}
+
 class DialogBoxComponent extends HTMLElement {
     constructor() {
         super()
@@ -24,9 +28,13 @@ class DialogBoxComponent extends HTMLElement {
                     top: 0px;
                     opacity: 1;
                     background-color: var(--dbc-fader-color);
+                    transition: opacity 1s;
                 }
                 .none {
                     display: none;
+                }
+                .fader.faded {
+                    opacity: 0;
                 }
                 .dialogContainer {
                     position: fixed;
@@ -70,7 +78,7 @@ class DialogBoxComponent extends HTMLElement {
                 }                
             </style>
             <div class='dialogroot none'>
-                <div class='fader'></div>
+                <div class='fader faded'></div>
                 <div class="dialogContainer">
                 <div class="dialog" :class="{fullscreen: fullscreen}">
                     <div class="buttons">
@@ -85,18 +93,31 @@ class DialogBoxComponent extends HTMLElement {
         ` 
         this.shadowRoot.appendChild(template.content.cloneNode(true))
         this.dialogroot = this.shadowRoot.querySelector('.dialogroot')
+        this.fader = this.shadowRoot.querySelector('.fader')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
     }
     connectedCallback() {
-        this.btnOk.onclick = () => {
-            this.dialogroot.classList.add("none")
-            this.resolveDialog()
+        this.btnOk.onclick = async () => {
+
+            const transitionend = () => {
+                this.fader.removeEventListener("transitionend", transitionend)
+                this.dialogroot.classList.add("none")
+                this.resolveDialog()
+            }
+
+            this.fader.addEventListener("transitionend", transitionend)
+            this.fader.classList.add("faded")
         }
     }
 
     show() {
-        return new Promise((res, rej) => {
+
+        //TODO fade dialog slowly 
+
+        return new Promise(async res => {
             this.dialogroot.classList.remove("none")
+            await nextTick()
+            this.fader.classList.remove("faded")
             this.resolveDialog = res
         })
     }
