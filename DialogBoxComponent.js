@@ -28,7 +28,7 @@ class DialogBoxComponent extends HTMLElement {
                     top: 0px;
                     opacity: 1;
                     background-color: var(--dbc-fader-color);
-                    transition: opacity 1s;
+                    transition: opacity 0.3s;
                 }
                 .none {
                     display: none;
@@ -58,6 +58,10 @@ class DialogBoxComponent extends HTMLElement {
                     z-index: 10;    
                     transform: translateX(0%);
                     box-shadow: 5px 4px 8px 2px rgba(0, 0, 0, 0.35), 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
+                    transition: opacity 0.3s;
+                }
+                .dialog.faded {
+                    opacity: 0;
                 }
                 .buttons {
                     display: flex;
@@ -80,7 +84,7 @@ class DialogBoxComponent extends HTMLElement {
             <div class='dialogroot none'>
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
-                <div class="dialog" :class="{fullscreen: fullscreen}">
+                <div class="dialog faded" :class="{fullscreen: fullscreen}">
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" v-if="ok" @focus="onFocus" @blur="onBlur" 
                             class="dialogButton pointer-def" :class="{default: isButtonOkDefault}"
@@ -94,6 +98,7 @@ class DialogBoxComponent extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true))
         this.dialogroot = this.shadowRoot.querySelector('.dialogroot')
         this.fader = this.shadowRoot.querySelector('.fader')
+        this.dialog = this.shadowRoot.querySelector('.dialog')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
     }
     connectedCallback() {
@@ -107,17 +112,24 @@ class DialogBoxComponent extends HTMLElement {
 
             this.fader.addEventListener("transitionend", transitionend)
             this.fader.classList.add("faded")
+            this.dialog.classList.add("faded")
         }
     }
 
     show() {
 
-        //TODO fade dialog slowly 
+        //TODO Theming
+        // TODO Buttons 
+        // TODO text 
+        // TODO input
+        // TODO Slot
+        // TODO return struct 
 
         return new Promise(async res => {
             this.dialogroot.classList.remove("none")
             await nextTick()
             this.fader.classList.remove("faded")
+            this.dialog.classList.remove("faded")
             this.resolveDialog = res
         })
     }
