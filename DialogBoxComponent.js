@@ -80,17 +80,31 @@ class DialogBoxComponent extends HTMLElement {
                     border-radius: 3px;
                     margin-left: 5px;
                 }                
+                .dialogButton.none {
+                    display: none;
+                }
             </style>
             <div class='dialogroot none'>
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
                 <div class="dialog faded" :class="{fullscreen: fullscreen}">
                     <div class="buttons">
-                        <div id="btnOk" tabindex="1" v-if="ok" @focus="onFocus" @blur="onBlur" 
-                            class="dialogButton pointer-def" :class="{default: isButtonOkDefault}"
-                            @keydown=keydownOk>
+                        <div id="btnOk" tabindex="1" @focus="onFocus" @blur="onBlur" 
+                            class="dialogButton pointer-def none" :class="{default: isButtonOkDefault}">
                             OK
-                        </div>                
+                        </div>
+                        <div id="btnYes" tabindex="1" @focus="onFocus" @blur="onBlur" 
+                            class="dialogButton pointer-def none" :class="{default: isButtonYesDefault}">
+                            Ja
+                        </div>                                        
+                        <div id="btnNo" tabindex="2" @focus="onFocus" @blur="onBlur" 
+                            class="dialogButton pointer-def none" :class="{default: isButtonNoDefault}">
+                            Nein
+                        </div>                                        
+                        <div id="btnCancel" tabindex="3" @focus="onFocus" @blur="onBlur" 
+                            class="dialogButton pointer-def none" :class="{default: isButtonCancelDefault}">
+                            Abbrechen
+                        </div>                                        
                     </div>                
                 </div>                
             </div>
@@ -100,27 +114,73 @@ class DialogBoxComponent extends HTMLElement {
         this.fader = this.shadowRoot.querySelector('.fader')
         this.dialog = this.shadowRoot.querySelector('.dialog')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
+        this.btnYes = this.shadowRoot.querySelector('#btnYes')
+        this.btnNo = this.shadowRoot.querySelector('#btnNo')
+        this.btnCancel = this.shadowRoot.querySelector('#btnCancel')
     }
     connectedCallback() {
-        this.btnOk.onclick = async () => {
-
-            const transitionend = () => {
-                this.fader.removeEventListener("transitionend", transitionend)
-                this.dialogroot.classList.add("none")
-                this.resolveDialog()
-            }
-
-            this.fader.addEventListener("transitionend", transitionend)
-            this.fader.classList.add("faded")
-            this.dialog.classList.add("faded")
+        this.btnOk.onclick = () => {
+            this.closeDialog()
+        }
+        this.btnYes.onclick = () => {
+            this.closeDialog()
+        }
+        this.btnNo.onclick = () => {
+            this.closeDialog()
+        }
+        this.btnCancel.onclick = () => {
+            this.closeDialog()
         }
     }
 
-    show() {
+    show(settings) {
 
-        //TODO Theming
-        // TODO Buttons 
+        const showBtn = (btn, show) => {
+            if (show) {
+                btn.style.width = null
+                btn.classList.remove("none")
+            }
+            else 
+                btn.classList.add("none")
+        }
+
+        showBtn(this.btnOk, settings.btnOk)
+        showBtn(this.btnYes, settings.btnYes)
+        showBtn(this.btnNo, settings.btnNo)
+        showBtn(this.btnCancel, settings.btnCancel)
+
+        const setWidths = () => {
+            let width = 0
+            if (settings.btnOk) {
+                //this.focusables.push(this.$refs.btn1)
+                width = this.btnOk.clientWidth
+            }
+            if (settings.btnYes) {
+                //this.focusables.push(this.$refs.btn2)
+                width = Math.max(width, this.btnYes.clientWidth)
+            }
+            if (settings.btnNo) {
+                //this.focusables.push(this.$refs.btn3)
+                width = Math.max(width, this.btnNo.clientWidth)
+            }
+            if (settings.btnCancel) {
+                //this.focusables.push(this.$refs.btn4)
+                width = Math.max(width, this.btnCancel.clientWidth)
+            }
+            if (settings.btnOk)
+                this.btnOk.style.width = `${width}px`
+            if (settings.btnYes)
+                this.btnYes.style.width = `${width}px`
+            if (settings.btnNo)
+                this.btnNo.style.width = `${width}px`
+            if (settings.btnCancel)
+                this.btnCancel.style.width = `${width}px`
+        }
+
+        // TODO Keyboard 
+        // TODO default button 
         // TODO text 
+        // TODO Theming
         // TODO input
         // TODO Slot
         // TODO return struct 
@@ -133,8 +193,21 @@ class DialogBoxComponent extends HTMLElement {
             await nextTick()
             this.fader.classList.remove("faded")
             this.dialog.classList.remove("faded")
+            setWidths()
             this.resolveDialog = res
         })
+    }
+
+    closeDialog() {
+        const transitionend = () => {
+            this.fader.removeEventListener("transitionend", transitionend)
+            this.dialogroot.classList.add("none")
+            this.resolveDialog()
+        }
+
+        this.fader.addEventListener("transitionend", transitionend)
+        this.fader.classList.add("faded")
+        this.dialog.classList.add("faded")
     }
 }
 
