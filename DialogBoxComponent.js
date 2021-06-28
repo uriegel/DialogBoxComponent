@@ -2,6 +2,11 @@ async function nextTick() {
     return new Promise(res => setTimeout(() => res()))
 }
 
+export const RESULT_OK = 1
+export const RESULT_YES = 2
+export const RESULT_NO = 3
+export const RESULT_CANCEL = 4
+
 class DialogBoxComponent extends HTMLElement {
     constructor() {
         super()
@@ -120,16 +125,16 @@ class DialogBoxComponent extends HTMLElement {
     }
     connectedCallback() {
         this.btnOk.onclick = () => {
-            this.closeDialog()
+            this.closeDialog(RESULT_OK)
         }
         this.btnYes.onclick = () => {
-            this.closeDialog()
+            this.closeDialog(RESULT_YES)
         }
         this.btnNo.onclick = () => {
-            this.closeDialog()
+            this.closeDialog(RESULT_NO)
         }
         this.btnCancel.onclick = () => {
-            this.closeDialog()
+            this.closeDialog(RESULT_CANCEL)
         }
     }
 
@@ -177,13 +182,12 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnCancel.style.width = `${width}px`
         }
 
+        // TODO text
+        // TODO input
         // TODO Keyboard 
         // TODO default button 
-        // TODO text 
         // TODO Theming
-        // TODO input
         // TODO Slot
-        // TODO return struct 
         // TODO Slide left
         // TODO Slide right
         // TODO Fullscreen?
@@ -198,11 +202,11 @@ class DialogBoxComponent extends HTMLElement {
         })
     }
 
-    closeDialog() {
+    closeDialog(result) {
         const transitionend = () => {
             this.fader.removeEventListener("transitionend", transitionend)
             this.dialogroot.classList.add("none")
-            this.resolveDialog()
+            this.resolveDialog({result})
         }
 
         this.fader.addEventListener("transitionend", transitionend)
