@@ -93,6 +93,7 @@ class DialogBoxComponent extends HTMLElement {
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
                 <div class="dialog faded" :class="{fullscreen: fullscreen}">
+                    <p id="text" class="none"></p>
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" @focus="onFocus" @blur="onBlur" 
                             class="dialogButton pointer-def none" :class="{default: isButtonOkDefault}">
@@ -118,6 +119,7 @@ class DialogBoxComponent extends HTMLElement {
         this.dialogroot = this.shadowRoot.querySelector('.dialogroot')
         this.fader = this.shadowRoot.querySelector('.fader')
         this.dialog = this.shadowRoot.querySelector('.dialog')
+        this.text = this.shadowRoot.querySelector('#text')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
         this.btnYes = this.shadowRoot.querySelector('#btnYes')
         this.btnNo = this.shadowRoot.querySelector('#btnNo')
@@ -148,6 +150,13 @@ class DialogBoxComponent extends HTMLElement {
             else 
                 btn.classList.add("none")
         }
+
+        if (settings.text) {
+            this.text.classList.remove("none")
+            this.text.innerHTML = settings.text
+        }
+        else
+            this.text.classList.add("none")
 
         showBtn(this.btnOk, settings.btnOk)
         showBtn(this.btnYes, settings.btnYes)
@@ -182,7 +191,6 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnCancel.style.width = `${width}px`
         }
 
-        // TODO text
         // TODO input
         // TODO Keyboard 
         // TODO default button 
