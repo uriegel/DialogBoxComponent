@@ -68,6 +68,13 @@ class DialogBoxComponent extends HTMLElement {
                 .dialog.faded {
                     opacity: 0;
                 }
+                #input {
+                    background-color: var(--dbc-main-background-color);
+                    color: var(--dbc-main-color);
+                    border-color: gray;
+                    border-style: solid;
+                    border-width: 1px;
+                }
                 .buttons {
                     display: flex;
                     margin-top: 20px;
@@ -94,6 +101,7 @@ class DialogBoxComponent extends HTMLElement {
                 <div class="dialogContainer">
                 <div class="dialog faded" :class="{fullscreen: fullscreen}">
                     <p id="text" class="none"></p>
+                    <input id="input" class="none" onClick="this.select();">
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" @focus="onFocus" @blur="onBlur" 
                             class="dialogButton pointer-def none" :class="{default: isButtonOkDefault}">
@@ -120,6 +128,7 @@ class DialogBoxComponent extends HTMLElement {
         this.fader = this.shadowRoot.querySelector('.fader')
         this.dialog = this.shadowRoot.querySelector('.dialog')
         this.text = this.shadowRoot.querySelector('#text')
+        this.input = this.shadowRoot.querySelector('#input')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
         this.btnYes = this.shadowRoot.querySelector('#btnYes')
         this.btnNo = this.shadowRoot.querySelector('#btnNo')
@@ -158,6 +167,12 @@ class DialogBoxComponent extends HTMLElement {
         else
             this.text.classList.add("none")
 
+        this.input.value = ""
+        if (settings.input) 
+            this.input.classList.remove("none")
+        else 
+            this.input.classList.add("none")
+
         showBtn(this.btnOk, settings.btnOk)
         showBtn(this.btnYes, settings.btnYes)
         showBtn(this.btnNo, settings.btnNo)
@@ -191,7 +206,6 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnCancel.style.width = `${width}px`
         }
 
-        // TODO input
         // TODO Keyboard 
         // TODO default button 
         // TODO Theming
@@ -211,10 +225,13 @@ class DialogBoxComponent extends HTMLElement {
     }
 
     closeDialog(result) {
+
+        const input = result == RESULT_OK || result == RESULT_YES ? this.input.value : undefined
+
         const transitionend = () => {
             this.fader.removeEventListener("transitionend", transitionend)
             this.dialogroot.classList.add("none")
-            this.resolveDialog({result})
+            this.resolveDialog({result, input})
         }
 
         this.fader.addEventListener("transitionend", transitionend)
