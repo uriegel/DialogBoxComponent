@@ -175,14 +175,30 @@ class DialogBoxComponent extends HTMLElement {
         this.btnOk.onclick = () => {
             this.closeDialog(RESULT_OK)
         }
+        this.btnOk.onkeydown = evt => {
+            if (evt.which == 13 || evt.which == 32) 
+                this.closeDialog(RESULT_OK)
+        }
         this.btnYes.onclick = () => {
             this.closeDialog(RESULT_YES)
+        }
+        this.btnYes.onkeydown = evt => {
+            if (evt.which == 13 || evt.which == 32) 
+                this.closeDialog(RESULT_YES)
         }
         this.btnNo.onclick = () => {
             this.closeDialog(RESULT_NO)
         }
+        this.btnNo.onkeydown = evt => {
+            if (evt.which == 13 || evt.which == 32) 
+                this.closeDialog(RESULT_NO)
+        }
         this.btnCancel.onclick = () => {
             this.closeDialog(RESULT_CANCEL)
+        }
+        this.btnCancel.onkeydown = evt => {
+            if (evt.which == 13 || evt.which == 32) 
+                this.closeDialog(RESULT_CANCEL)
         }
         this.input.onfocus = () => setTimeout(() => this.input.select())
 
@@ -218,6 +234,9 @@ class DialogBoxComponent extends HTMLElement {
         showBtn(this.btnNo, settings.btnNo)
         showBtn(this.btnCancel, settings.btnCancel)
 
+        this.cancel = settings.btnCancel
+        this.no = settings.btnNo
+
         const setWidths = () => {
             let width = 0
             if (settings.btnOk) {
@@ -246,7 +265,6 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnCancel.style.width = `${width}px`
         }
 
-        // TODO Keyboard enter, space
         // TODO this.focusIndex = 0 
         // TODO default button 
         // TODO Theming (commander old version)
@@ -287,6 +305,24 @@ class DialogBoxComponent extends HTMLElement {
                 setFocus()
                 break
             }        
+            case 13: // Return
+                // TODO
+                // if (this.defButton && !this.isButtonFocused) {
+                //     this.result = 
+                //         this.defButton == "ok"
+                //         ? 1
+                //         : this.defButton == "yes"
+                //         ? 2
+                //         : this.defButton == "no"
+                //         ? 3
+                //         : 0
+                //     this.onClose()    
+                // }
+                break
+            case 27: // ESC
+                if (this.cancel || !this.no) 
+                    this.closeDialog(RESULT_CANCEL)
+                break            
             default:
                 return
         }
