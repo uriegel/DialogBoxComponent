@@ -16,10 +16,13 @@ class DialogBoxComponent extends HTMLElement {
         template.innerHTML = `  
             <style>
                 :host {
-                    --dbc-fader-color: rgba(0, 0, 0, 0.50);            
                     --dbc-main-background-color: white;
                     --dbc-main-color: black;
-                    --dbc-button-color: gray;
+                    --dbc-fader-color: rgba(0, 0, 0, 0.50);            
+                    --dbc-button-color: blue;
+                    --dbc-button-hover-color: #7979ff;
+                    --dbc-button-active-color: #01018e;
+                    --dbc-button-focus-color: blue;    
                 }
                 .dialogroot {
                     position: absolute;
@@ -75,6 +78,16 @@ class DialogBoxComponent extends HTMLElement {
                     border-style: solid;
                     border-width: 1px;
                 }
+                #input:focus {
+                    outline-color: var(--dbc-button-active-color);
+                    border-color: transparent;
+                    outline-width: 1px;
+                    outline-style: solid;
+                }
+                #input::selection {
+                    color: white;
+                    background-color: var(--dbc-button-color);
+                }                
                 .buttons {
                     display: flex;
                     margin-top: 20px;
@@ -95,6 +108,30 @@ class DialogBoxComponent extends HTMLElement {
                 .dialogButton.none {
                     display: none;
                 }
+                .dialogButton:hover {
+                    background-color: var(--dbc-button-hover-color);
+                }     
+                .dialogButton.isDefaultButton {
+                    outline-color: gray;
+                    outline-width: 1px;
+                    outline-style: solid;
+                    outline-offset: 1px;
+                }
+                .dialogButton:active, .buttonActive {
+                    background-color: var(--dbc-button-active-color);
+                }
+                .dialogButton.default {
+                    outline-color: rgb(160, 160, 160);
+                    outline-width: 1px;
+                    outline-style: solid;
+                    outline-offset: 1px;
+                }
+                .dialogButton:focus {
+                    outline-color: var(--dbc-button-focus-color);
+                    outline-width: 1px;
+                    outline-style: solid;
+                    outline-offset: 1px;
+                }                           
             </style>
             <div class='dialogroot none'>
                 <div class='fader faded'></div>
@@ -147,6 +184,9 @@ class DialogBoxComponent extends HTMLElement {
         this.btnCancel.onclick = () => {
             this.closeDialog(RESULT_CANCEL)
         }
+        this.input.onfocus = () => setTimeout(() => this.input.select())
+
+        this.dialog.onkeydown = evt => this.onKeydown(evt)
     }
 
     show(settings) {
@@ -181,19 +221,19 @@ class DialogBoxComponent extends HTMLElement {
         const setWidths = () => {
             let width = 0
             if (settings.btnOk) {
-                //this.focusables.push(this.$refs.btn1)
+                this.focusables.push(this.btnOk)
                 width = this.btnOk.clientWidth
             }
             if (settings.btnYes) {
-                //this.focusables.push(this.$refs.btn2)
+                this.focusables.push(this.btnYes)
                 width = Math.max(width, this.btnYes.clientWidth)
             }
             if (settings.btnNo) {
-                //this.focusables.push(this.$refs.btn3)
+                this.focusables.push(this.btnNo)
                 width = Math.max(width, this.btnNo.clientWidth)
             }
             if (settings.btnCancel) {
-                //this.focusables.push(this.$refs.btn4)
+                this.focusables.push(this.btnCancel)
                 width = Math.max(width, this.btnCancel.clientWidth)
             }
             if (settings.btnOk)
@@ -206,9 +246,10 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnCancel.style.width = `${width}px`
         }
 
-        // TODO Keyboard 
+        // TODO Keyboard enter, space
+        // TODO this.focusIndex = 0 
         // TODO default button 
-        // TODO Theming
+        // TODO Theming (commander old version)
         // TODO Slot
         // TODO Slide left
         // TODO Slide right
@@ -219,9 +260,38 @@ class DialogBoxComponent extends HTMLElement {
             await nextTick()
             this.fader.classList.remove("faded")
             this.dialog.classList.remove("faded")
+            this.focusables = []
+            if (settings.input)
+                this.focusables.push(this.input)
             setWidths()
+            this.focusIndex = 0 
+            this.focusables[this.focusIndex].focus()        
             this.resolveDialog = res
         })
+    }
+
+    onKeydown(evt) {
+        switch (evt.which) {
+            case 9: { // tab
+                const active = document.activeElement
+                const setFocus = () => {
+                    this.focusIndex = evt.shiftKey ? this.focusIndex - 1 : this.focusIndex + 1
+                    if (this.focusIndex >= this.focusables.length)
+                        this.focusIndex = 0
+                    if (this.focusIndex < 0)
+                        this.focusIndex = this.focusables.length - 1
+                    this.focusables[this.focusIndex].focus()
+                    // if (document.activeElement == active)
+                    //     setFocus()    
+                }
+                setFocus()
+                break
+            }        
+            default:
+                return
+        }
+        evt.preventDefault()
+        evt.stopPropagation()            
     }
 
     closeDialog(result) {
