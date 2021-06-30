@@ -140,20 +140,20 @@ class DialogBoxComponent extends HTMLElement {
                     <p id="text" class="none"></p>
                     <input id="input" class="none" onClick="this.select();">
                     <div class="buttons">
-                        <div id="btnOk" tabindex="1" @focus="onFocus" @blur="onBlur" 
-                            class="dialogButton pointer-def none" :class="{default: isButtonOkDefault}">
+                        <div id="btnOk" tabindex="1" 
+                            class="dialogButton pointer-def none" >
                             OK
                         </div>
-                        <div id="btnYes" tabindex="1" @focus="onFocus" @blur="onBlur" 
-                            class="dialogButton pointer-def none" :class="{default: isButtonYesDefault}">
+                        <div id="btnYes" tabindex="1"
+                            class="dialogButton pointer-def none" >
                             Ja
                         </div>                                        
-                        <div id="btnNo" tabindex="2" @focus="onFocus" @blur="onBlur" 
-                            class="dialogButton pointer-def none" :class="{default: isButtonNoDefault}">
+                        <div id="btnNo" tabindex="2" 
+                            class="dialogButton pointer-def none" >
                             Nein
                         </div>                                        
-                        <div id="btnCancel" tabindex="3" @focus="onFocus" @blur="onBlur" 
-                            class="dialogButton pointer-def none" :class="{default: isButtonCancelDefault}">
+                        <div id="btnCancel" tabindex="3" 
+                            class="dialogButton pointer-def none" >
                             Abbrechen
                         </div>                                        
                     </div>                
@@ -263,10 +263,24 @@ class DialogBoxComponent extends HTMLElement {
                 this.btnNo.style.width = `${width}px`
             if (settings.btnCancel)
                 this.btnCancel.style.width = `${width}px`
+
+            this.btnOk.classList.remove("default")                
+            this.btnYes.classList.remove("default")                
+            this.btnNo.classList.remove("default")                
+            this.btnCancel.classList.remove("default")                
+
+            if (settings.defBtnOk)
+                this.btnOk.classList.add("default")
+            else if (settings.defBtnYes)
+                this.btnYes.classList.add("default")
+            else if (settings.defBtnNo)
+                this.btnNo.classList.add("default")
+            else if (settings.defBtnCancel)
+                this.btnCancel.classList.add("default")
         }
 
-        // TODO this.focusIndex = 0 
-        // TODO default button 
+        // TODO default button: if any btn has focus: deactivate defButton
+        // TODO default button: Enter control
         // TODO Theming (commander old version)
         // TODO Slot
         // TODO Slide left

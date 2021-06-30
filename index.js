@@ -23,7 +23,9 @@ showDialogButton2.onclick = async () => {
     const res = await dialog.show({
         text: "Standard Cancel",
         btnOk: true,
-        btnCancel: true
+        btnCancel: true,
+        defBtnCancel: true
+
     })    
     console.log("Dialog closed", res)
 }
@@ -61,7 +63,8 @@ showDialogButton6.onclick = async () => {
         text: "Der Text input:",
         input: true,
         btnOk: true,
-        btnCancel: true
+        btnCancel: true,
+        defBtnOk: true
     })    
     console.log("Dialog closed", res)
 }
