@@ -111,17 +111,11 @@ class DialogBoxComponent extends HTMLElement {
                 .dialogButton:hover {
                     background-color: var(--dbc-button-hover-color);
                 }     
-                .dialogButton.isDefaultButton {
-                    outline-color: gray;
-                    outline-width: 1px;
-                    outline-style: solid;
-                    outline-offset: 1px;
-                }
                 .dialogButton:active, .buttonActive {
                     background-color: var(--dbc-button-active-color);
                 }
                 .dialogButton.default {
-                    outline-color: rgb(160, 160, 160);
+                    outline-color: gray;
                     outline-width: 1px;
                     outline-style: solid;
                     outline-offset: 1px;
@@ -179,6 +173,9 @@ class DialogBoxComponent extends HTMLElement {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_OK)
         }
+        this.btnOk.onfocus = () => this.focusButton(true)
+        this.btnOk.onblur = () => this.focusButton(false)
+
         this.btnYes.onclick = () => {
             this.closeDialog(RESULT_YES)
         }
@@ -186,6 +183,9 @@ class DialogBoxComponent extends HTMLElement {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_YES)
         }
+        this.btnYes.onfocus = () => this.focusButton(true)
+        this.btnYes.onblur = () => this.focusButton(false)
+
         this.btnNo.onclick = () => {
             this.closeDialog(RESULT_NO)
         }
@@ -193,6 +193,9 @@ class DialogBoxComponent extends HTMLElement {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_NO)
         }
+        this.btnNo.onfocus = () => this.focusButton(true)
+        this.btnNo.onblur = () => this.focusButton(false)
+
         this.btnCancel.onclick = () => {
             this.closeDialog(RESULT_CANCEL)
         }
@@ -200,6 +203,9 @@ class DialogBoxComponent extends HTMLElement {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_CANCEL)
         }
+        this.btnCancel.onfocus = () => this.focusButton(true)
+        this.btnCancel.onblur = () => this.focusButton(false)
+
         this.input.onfocus = () => setTimeout(() => this.input.select())
 
         this.dialog.onkeydown = evt => this.onKeydown(evt)
@@ -269,20 +275,28 @@ class DialogBoxComponent extends HTMLElement {
             this.btnNo.classList.remove("default")                
             this.btnCancel.classList.remove("default")                
 
-            if (settings.defBtnOk)
+            if (settings.defBtnOk) {
                 this.btnOk.classList.add("default")
-            else if (settings.defBtnYes)
+                this.defBtn = this.btnOk
+            }
+            else if (settings.defBtnYes) {
                 this.btnYes.classList.add("default")
-            else if (settings.defBtnNo)
+                this.defBtn = this.btnYes
+            }
+            else if (settings.defBtnNo) {
                 this.btnNo.classList.add("default")
-            else if (settings.defBtnCancel)
+                this.defBtn = this.btnNo
+            }
+            else if (settings.defBtnCancel) {
                 this.btnCancel.classList.add("default")
+                this.defBtn = this.btnCancel
+            } else
+                this.defBtn = null
         }
 
-        // TODO default button: if any btn has focus: deactivate defButton
-        // TODO default button: Enter control
+        // TODO input dialog: preset input
         // TODO Theming (commander old version)
-        // TODO Slot
+        // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
         // TODO Slide right
         // TODO Fullscreen?
@@ -320,18 +334,17 @@ class DialogBoxComponent extends HTMLElement {
                 break
             }        
             case 13: // Return
-                // TODO
-                // if (this.defButton && !this.isButtonFocused) {
-                //     this.result = 
-                //         this.defButton == "ok"
-                //         ? 1
-                //         : this.defButton == "yes"
-                //         ? 2
-                //         : this.defButton == "no"
-                //         ? 3
-                //         : 0
-                //     this.onClose()    
-                // }
+                if (this.defBtn && !this.buttonHasFocus) {
+                    const result = 
+                        this.defBtn == this.btnOk
+                        ? RESULT_OK
+                        : this.defBtn == this.btnYes
+                        ? RESULT_YES
+                        : this.defBtn == this.btnNo
+                        ? RESULT_NO
+                        : RESULT_CANCEL
+                    this.closeDialog(result)
+                }
                 break
             case 27: // ESC
                 if (this.cancel || !this.no) 
@@ -357,6 +370,19 @@ class DialogBoxComponent extends HTMLElement {
         this.fader.addEventListener("transitionend", transitionend)
         this.fader.classList.add("faded")
         this.dialog.classList.add("faded")
+    }
+
+    focusButton(focus) {
+        if (this.defBtn) {
+            if (focus) {
+                this.defBtn.classList.remove("default")
+                this.buttonHasFocus = true
+            }
+            else {
+                this.defBtn.classList.add("default")
+                this.buttonHasFocus = false
+            }
+        }
     }
 }
 
