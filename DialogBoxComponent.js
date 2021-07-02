@@ -19,10 +19,18 @@ class DialogBoxComponent extends HTMLElement {
                     --dbc-main-background-color: white;
                     --dbc-main-color: black;
                     --dbc-fader-color: rgba(0, 0, 0, 0.50);            
-                    --dbc-button-color: blue;
+                    --dbc-button-color: white;
+                    --dbc-button-backgroundcolor: blue;
                     --dbc-button-hover-color: #7979ff;
                     --dbc-button-active-color: #01018e;
                     --dbc-button-focus-color: blue;    
+                    --dbc-button-margin: 20px 30px 30px 30px;
+                    --dbc-button-flexgrow: 0;
+                    --dbc-button-marginleft: 5px;
+                    --dbc-button-cornerradius: 3px;
+                    --dbc-button-bordercolor: transparent;
+                    --dbc-button-borderstyle: none;
+                    --dbc-button-borderwidth: 0px;
                 }
                 .dialogroot {
                     position: absolute;
@@ -56,10 +64,8 @@ class DialogBoxComponent extends HTMLElement {
                 }
                 .dialog {
                     display: flex;
-                    flex-direction: column;    
                     margin: 30px;
-                    box-sizing: border-box;
-                    padding: 30px;
+                    flex-direction: column;    
                     border-radius: 5px;
                     color: var(--dbc-main-color);
                     background-color: var(--dbc-main-background-color);
@@ -70,6 +76,12 @@ class DialogBoxComponent extends HTMLElement {
                 }
                 .dialog.faded {
                     opacity: 0;
+                }
+                .dialogContent {
+                    display: flex;
+                    flex-direction: column;    
+                    box-sizing: border-box;
+                    padding: 30px 30px 0px 30px;
                 }
                 #input {
                     background-color: var(--dbc-main-background-color);
@@ -86,24 +98,28 @@ class DialogBoxComponent extends HTMLElement {
                 }
                 #input::selection {
                     color: white;
-                    background-color: var(--dbc-button-color);
+                    background-color: blue;
                 }                
                 .buttons {
                     display: flex;
-                    margin-top: 20px;
+                    margin: var(--dbc-button-margin);
                 }
                 .dialogButton {
                     display: inline-block;
-                    background-color: var(--dbc-button-color);
+                    flex-grow: var(--dbc-button-flexgrow);
+                    background-color: var(--dbc-button-backgroundcolor);
                     outline-color: var(--dbc-main-background-color);
                     user-select: none;
-                    color: white;
+                    color: var(--dbc-button-color);
                     text-align: center;
                     padding: 2px 7px;
                     /* line-height: 20px; */
                     transition: background-color 0.3s, outline-color 400ms;
-                    border-radius: 3px;
-                    margin-left: 5px;
+                    border-radius: var(--dbc-button-cornerradius);
+                    margin-left: var(--dbc-button-marginleft);
+                    border-color: var(--dbc-button-bordercolor);
+                    border-style: var(--dbc-button-borderstyle);
+                    border-width: var(--dbc-button-borderwidth);
                 }                
                 .dialogButton:first-child {
                     margin-left: auto;
@@ -134,8 +150,10 @@ class DialogBoxComponent extends HTMLElement {
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
                 <div class="dialog faded" :class="{fullscreen: fullscreen}">
-                    <p id="text" class="none"></p>
-                    <input id="input" class="none" onClick="this.select();">
+                    <div class="dialogContent">
+                        <p id="text" class="none"></p>
+                        <input id="input" class="none" onClick="this.select();">
+                    </div>
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" 
                             class="dialogButton pointer-def none" >

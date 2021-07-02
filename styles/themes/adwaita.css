@@ -1,5 +1,14 @@
 :root .themeAdwaita {
-    --dbc-button-color: gray;
+    --dbc-button-backgroundcolor: transparent;
+    --dbc-button-color: black;
+    --dbc-button-margin: 20px 0px 0px 0px;
+    --dbc-button-flexgrow: 1;
+    --dbc-button-marginleft: 0px;
+    --dbc-button-cornerradius: 0px;
+    --dbc-button-bordercolor: lightgray;
+    --dbc-button-borderstyle: solid;
+    --dbc-button-borderwidth: 1px;
+
 }
 
 
