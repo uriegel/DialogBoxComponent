@@ -230,8 +230,10 @@ class DialogBoxComponent extends HTMLElement {
             this.text.classList.add("none")
 
         this.input.value = ""
-        if (settings.input) 
+        if (settings.input) {
             this.input.classList.remove("none")
+            this.input.value = settings.inputText
+        }
         else 
             this.input.classList.add("none")
 
@@ -294,7 +296,6 @@ class DialogBoxComponent extends HTMLElement {
                 this.defBtn = null
         }
 
-        // TODO input dialog: preset input
         // TODO Theming (commander old version)
         // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left

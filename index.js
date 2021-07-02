@@ -62,6 +62,7 @@ showDialogButton6.onclick = async () => {
     const res = await dialog.show({
         text: "Der Text input:",
         input: true,
+        inputText: "The text input",
         btnOk: true,
         btnCancel: true,
         defBtnOk: true
