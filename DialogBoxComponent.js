@@ -105,6 +105,9 @@ class DialogBoxComponent extends HTMLElement {
                     border-radius: 3px;
                     margin-left: 5px;
                 }                
+                .dialogButton:first-child {
+                    margin-left: auto;
+                }                
                 .dialogButton.none {
                     display: none;
                 }
