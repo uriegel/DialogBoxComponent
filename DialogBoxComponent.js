@@ -20,9 +20,9 @@ class DialogBoxComponent extends HTMLElement {
                     --dbc-main-color: black;
                     --dbc-fader-color: rgba(0, 0, 0, 0.50);            
                     --dbc-button-color: white;
-                    --dbc-button-backgroundcolor: blue;
-                    --dbc-button-hover-color: #7979ff;
-                    --dbc-button-active-color: #01018e;
+                    --dbc-button-background-color: blue;
+                    --dbc-button-hover-background-color: #7979ff;
+                    --dbc-button-active-background-color: #01018e;
                     --dbc-button-focus-color: blue;    
                     --dbc-button-margin: 20px 30px 30px 30px;
                     --dbc-button-flexgrow: 0;
@@ -35,6 +35,7 @@ class DialogBoxComponent extends HTMLElement {
                     --dbc-button-padding: 2px 7px;
                     --dbc-button-outlinestyle: solid;
                     --dbc-button-outlineoffset: 1px;
+                    --dbc-input-selection-color: blue;
                 }
                 .dialogroot {
                     position: absolute;
@@ -95,14 +96,14 @@ class DialogBoxComponent extends HTMLElement {
                     border-width: 1px;
                 }
                 #input:focus {
-                    outline-color: var(--dbc-button-active-color);
+                    outline-color: var(--dbc-input-selection-color);
                     border-color: transparent;
                     outline-width: 1px;
                     outline-style: solid;
                 }
                 #input::selection {
                     color: white;
-                    background-color: blue;
+                    background-color: var(--dbc-input-selection-color);
                 }                
                 .buttons {
                     display: flex;
@@ -111,7 +112,7 @@ class DialogBoxComponent extends HTMLElement {
                 .dialogButton {
                     display: inline-block;
                     flex-grow: var(--dbc-button-flexgrow);
-                    background-color: var(--dbc-button-backgroundcolor);
+                    background-color: var(--dbc-button-background-color);
                     outline-color: var(--dbc-main-background-color);
                     user-select: none;
                     color: var(--dbc-button-color);
@@ -136,10 +137,10 @@ class DialogBoxComponent extends HTMLElement {
                     border-bottom-right-radius: var(--dbc-button-buttomradius);
                 }                
                 .dialogButton:hover {
-                    background-color: var(--dbc-button-hover-color);
+                    background-color: var(--dbc-button-hover-background-color);
                 }     
                 .dialogButton:active, .buttonActive {
-                    background-color: var(--dbc-button-active-color);
+                    background-color: var(--dbc-button-active-background-color);
                 }
                 .dialogButton.default {
                     outline-color: gray;
@@ -347,7 +348,6 @@ class DialogBoxComponent extends HTMLElement {
                 setTimeout(() => this.defBtn.focus())
         }
 
-        // TODO Theming: hover colors
         // TODO Theming: dark mode
         // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
