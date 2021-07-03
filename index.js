@@ -50,7 +50,6 @@ showDialogButton2.onclick = async () => {
         btnOk: true,
         btnCancel: true,
         defBtnCancel: true
-
     })    
     console.log("Dialog closed", res)
 }
@@ -90,7 +89,7 @@ showDialogButton6.onclick = async () => {
         inputText: "The text input",
         btnOk: true,
         btnCancel: true,
-        defBtnOk: true
+        defBtnCancel: true
     })    
     console.log("Dialog closed", res)
 }

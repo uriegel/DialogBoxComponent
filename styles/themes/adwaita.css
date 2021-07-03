@@ -7,8 +7,9 @@
     --dbc-button-cornerradius: 0px;
     --dbc-button-bordercolor: lightgray;
     --dbc-button-borderstyle: solid;
-    --dbc-button-borderwidth: 1px;
-
+    --dbc-button-borderwidth: 1px 0px 1px 1px;
+    --dbc-button-buttomradius: 5px;
+    --dbc-button-padding: 10px 15px;
 }
 
 

@@ -31,6 +31,8 @@ class DialogBoxComponent extends HTMLElement {
                     --dbc-button-bordercolor: transparent;
                     --dbc-button-borderstyle: none;
                     --dbc-button-borderwidth: 0px;
+                    --dbc-button-buttomradius: 3px;
+                    --dbc-button-padding: 2px 7px;
                 }
                 .dialogroot {
                     position: absolute;
@@ -112,7 +114,7 @@ class DialogBoxComponent extends HTMLElement {
                     user-select: none;
                     color: var(--dbc-button-color);
                     text-align: center;
-                    padding: 2px 7px;
+                    padding: var(--dbc-button-padding);
                     /* line-height: 20px; */
                     transition: background-color 0.3s, outline-color 400ms;
                     border-radius: var(--dbc-button-cornerradius);
@@ -121,12 +123,16 @@ class DialogBoxComponent extends HTMLElement {
                     border-style: var(--dbc-button-borderstyle);
                     border-width: var(--dbc-button-borderwidth);
                 }                
-                .dialogButton:first-child {
-                    margin-left: auto;
-                }                
                 .dialogButton.none {
                     display: none;
                 }
+                .firstButton {
+                    margin-left: auto;
+                    border-bottom-left-radius: var(--dbc-button-buttomradius);
+                }                
+                .lastButton {
+                    border-bottom-right-radius: var(--dbc-button-buttomradius);
+                }                
                 .dialogButton:hover {
                     background-color: var(--dbc-button-hover-color);
                 }     
@@ -263,6 +269,31 @@ class DialogBoxComponent extends HTMLElement {
         showBtn(this.btnNo, settings.btnNo)
         showBtn(this.btnCancel, settings.btnCancel)
 
+        this.btnOk.classList.remove("firstButton")
+        this.btnOk.classList.remove("lastButton")
+        this.btnYes.classList.remove("firstButton")
+        this.btnYes.classList.remove("lastButton")
+        this.btnNo.classList.remove("firstButton")
+        this.btnNo.classList.remove("lastButton")
+        this.btnCancel.classList.remove("firstButton")
+        this.btnCancel.classList.remove("lastButton")
+        const firstButton = settings.btnOk 
+            ? this.btnOk
+            : settings.btnYes
+            ? this.btnYes
+            : settings.btnNo
+            ? this.btnNo
+            : this.btnCancel
+        firstButton.classList.add("firstButton")
+        const lastButton = settings.btnCancel
+            ? this.btnCancel
+            : settings.btnNo
+            ? this.btnNo
+            : settings.btnYes
+            ? this.btnYes
+            : this.btnOk
+            lastButton.classList.add("lastButton")
+
         this.cancel = settings.btnCancel
         this.no = settings.btnNo
 
@@ -317,7 +348,8 @@ class DialogBoxComponent extends HTMLElement {
                 this.defBtn = null
         }
 
-        // TODO Theming (commander old version)
+        // TODO Theming: focus, defbutton
+        // TODO Theming: dark mode
         // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
         // TODO Slide right
