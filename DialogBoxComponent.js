@@ -132,6 +132,7 @@ class DialogBoxComponent extends HTMLElement {
                 .firstButton {
                     margin-left: auto;
                     border-bottom-left-radius: var(--dbc-button-buttomradius);
+                    border-left-width: var(--dbc-button-first-borderwidth);
                 }                
                 .lastButton {
                     border-bottom-right-radius: var(--dbc-button-buttomradius);
@@ -348,12 +349,10 @@ class DialogBoxComponent extends HTMLElement {
                 setTimeout(() => this.defBtn.focus())
         }
 
-        // TODO Theming: dark mode
         // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
         // TODO Slide right
-        // TODO Fullscreen?
-
+        
         return new Promise(async res => {
             this.dialogroot.classList.remove("none")
             await nextTick()
