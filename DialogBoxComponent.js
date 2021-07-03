@@ -33,6 +33,8 @@ class DialogBoxComponent extends HTMLElement {
                     --dbc-button-borderwidth: 0px;
                     --dbc-button-buttomradius: 3px;
                     --dbc-button-padding: 2px 7px;
+                    --dbc-button-outlinestyle: solid;
+                    --dbc-button-outlineoffset: 1px;
                 }
                 .dialogroot {
                     position: absolute;
@@ -142,14 +144,14 @@ class DialogBoxComponent extends HTMLElement {
                 .dialogButton.default {
                     outline-color: gray;
                     outline-width: 1px;
-                    outline-style: solid;
-                    outline-offset: 1px;
+                    outline-style: var(--dbc-button-outlinestyle);
+                    outline-offset: var(--dbc-button-outlineoffset);
                 }
                 .dialogButton:focus {
                     outline-color: var(--dbc-button-focus-color);
                     outline-width: 1px;
-                    outline-style: solid;
-                    outline-offset: 1px;
+                    outline-style: var(--dbc-button-outlinestyle);
+                    outline-offset: var(--dbc-button-outlineoffset);
                 }                           
             </style>
             <div class='dialogroot none'>
@@ -193,9 +195,7 @@ class DialogBoxComponent extends HTMLElement {
         this.btnCancel = this.shadowRoot.querySelector('#btnCancel')
     }
     connectedCallback() {
-        this.btnOk.onclick = () => {
-            this.closeDialog(RESULT_OK)
-        }
+        this.btnOk.onclick = () => this.closeDialog(RESULT_OK)
         this.btnOk.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_OK)
@@ -203,9 +203,7 @@ class DialogBoxComponent extends HTMLElement {
         this.btnOk.onfocus = () => this.focusButton(true)
         this.btnOk.onblur = () => this.focusButton(false)
 
-        this.btnYes.onclick = () => {
-            this.closeDialog(RESULT_YES)
-        }
+        this.btnYes.onclick = () => this.closeDialog(RESULT_YES)
         this.btnYes.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_YES)
@@ -213,9 +211,7 @@ class DialogBoxComponent extends HTMLElement {
         this.btnYes.onfocus = () => this.focusButton(true)
         this.btnYes.onblur = () => this.focusButton(false)
 
-        this.btnNo.onclick = () => {
-            this.closeDialog(RESULT_NO)
-        }
+        this.btnNo.onclick = () => this.closeDialog(RESULT_NO)
         this.btnNo.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_NO)
@@ -223,9 +219,7 @@ class DialogBoxComponent extends HTMLElement {
         this.btnNo.onfocus = () => this.focusButton(true)
         this.btnNo.onblur = () => this.focusButton(false)
 
-        this.btnCancel.onclick = () => {
-            this.closeDialog(RESULT_CANCEL)
-        }
+        this.btnCancel.onclick = () => this.closeDialog(RESULT_CANCEL)
         this.btnCancel.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) 
                 this.closeDialog(RESULT_CANCEL)
@@ -234,6 +228,9 @@ class DialogBoxComponent extends HTMLElement {
         this.btnCancel.onblur = () => this.focusButton(false)
 
         this.input.onfocus = () => setTimeout(() => this.input.select())
+
+        this.dialog.addEventListener("focusin", () => this.focusIndex = 
+            this.focusables.findIndex(n => n == this.shadowRoot.activeElement))
 
         this.dialog.onkeydown = evt => this.onKeydown(evt)
     }
@@ -346,9 +343,11 @@ class DialogBoxComponent extends HTMLElement {
                 this.defBtn = this.btnCancel
             } else
                 this.defBtn = null
+            if (this.defBtn && !settings.input)
+                setTimeout(() => this.defBtn.focus())
         }
 
-        // TODO Theming: focus, defbutton
+        // TODO Theming: hover colors
         // TODO Theming: dark mode
         // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
