@@ -81,7 +81,8 @@ showDialogButton21.onclick = async () => {
 
 showDialogButton3.onclick = async () => {
     const res = await dialog.show({
-        text: "Slide left",
+        text: "Slide",
+        slide: true,
         btnOk: true,
         btnCancel: true
     })    
@@ -90,7 +91,8 @@ showDialogButton3.onclick = async () => {
 
 showDialogButton4.onclick = async () => {
     const res = await dialog.show({
-        text: "Slide right",
+        text: "Slide reverse",
+        slideReverse: true,
         btnOk: true,
         btnCancel: true
     })    

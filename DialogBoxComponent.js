@@ -66,6 +66,14 @@ class DialogBoxComponent extends HTMLElement {
                     top: 0;
                     right: 0;
                     bottom: 0;                    
+                    transform: translateX(0%);
+                    transition: transform 0.3s;
+                }
+                .dialogContainer.leftTranslated {
+                    transform: translateX(-50%);
+                }
+                .dialogContainer.rightTranslated {
+                    transform: translateX(50%);
                 }
                 .dialog {
                     display: flex;
@@ -75,7 +83,6 @@ class DialogBoxComponent extends HTMLElement {
                     color: var(--dbc-main-color);
                     background-color: var(--dbc-main-background-color);
                     z-index: 10;    
-                    transform: translateX(0%);
                     box-shadow: 5px 4px 8px 2px rgba(0, 0, 0, 0.35), 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
                     transition: opacity 0.3s;
                 }
@@ -188,6 +195,7 @@ class DialogBoxComponent extends HTMLElement {
         ` 
         this.shadowRoot.appendChild(template.content.cloneNode(true))
         this.dialogroot = this.shadowRoot.querySelector('.dialogroot')
+        this.dialogContainer = this.shadowRoot.querySelector('.dialogContainer')
         this.fader = this.shadowRoot.querySelector('.fader')
         this.dialog = this.shadowRoot.querySelector('.dialog')
         this.text = this.shadowRoot.querySelector('#text')
@@ -351,15 +359,20 @@ class DialogBoxComponent extends HTMLElement {
             if (this.defBtn && !settings.input && !settings.extendedFocusables)
                 setTimeout(() => this.defBtn.focus())
         }
-
-        // TODO Slide left
-        // TODO Slide right
         
         return new Promise(async res => {
             this.dialogroot.classList.remove("none")
+            this.slide = settings.slide
+            this.slideReverse = settings.slideReverse
+            if (settings.slide)
+                this.dialogContainer.classList.add("leftTranslated")
+            if (settings.slideReverse)
+                this.dialogContainer.classList.add("rightTranslated")
             await nextTick()
             this.fader.classList.remove("faded")
             this.dialog.classList.remove("faded")
+            this.dialogContainer.classList.remove("leftTranslated")
+            this.dialogContainer.classList.remove("rightTranslated")
             this.focusables = []
             if (settings.input)
                 this.focusables.push(this.input)
@@ -420,6 +433,8 @@ class DialogBoxComponent extends HTMLElement {
         const transitionend = () => {
             this.fader.removeEventListener("transitionend", transitionend)
             this.dialogroot.classList.add("none")
+            this.dialogContainer.classList.remove("rightTranslated");
+            this.dialogContainer.classList.remove("leftTranslated");
             const dialogResult = {result}
             if (input)
                 dialogResult.input = input
@@ -429,6 +444,10 @@ class DialogBoxComponent extends HTMLElement {
         }
 
         this.fader.addEventListener("transitionend", transitionend)
+        if (this.slide) 
+            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES ? "rightTranslated" : "leftTranslated")    
+        if (this.slideReverse) 
+            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES ? "leftTranslated" : "rightTranslated")    
         this.fader.classList.add("faded")
         this.dialog.classList.add("faded")
     }
