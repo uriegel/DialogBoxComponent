@@ -14,3 +14,7 @@ body {
     flex-grow: 1;
     position: relative;
 }
+
+.none {
+    display: none;
+}

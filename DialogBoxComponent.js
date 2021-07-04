@@ -163,6 +163,7 @@ class DialogBoxComponent extends HTMLElement {
                     <div class="dialogContent">
                         <p id="text" class="none"></p>
                         <input id="input" class="none" onClick="this.select();">
+                        <slot></slot>
                     </div>
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" 
@@ -232,7 +233,7 @@ class DialogBoxComponent extends HTMLElement {
         this.input.onfocus = () => setTimeout(() => this.input.select())
 
         this.dialog.addEventListener("focusin", () => this.focusIndex = 
-            this.focusables.findIndex(n => n == this.shadowRoot.activeElement))
+            this.focusables.findIndex(n => n == this.shadowRoot.activeElement || n == document.activeElement))
 
         this.dialog.onkeydown = evt => this.onKeydown(evt)
     }
@@ -247,6 +248,8 @@ class DialogBoxComponent extends HTMLElement {
             else 
                 btn.classList.add("none")
         }
+
+        this.onExtendedResult = settings.onExtendedResult
 
         if (settings.text) {
             this.text.classList.remove("none")
@@ -345,11 +348,10 @@ class DialogBoxComponent extends HTMLElement {
                 this.defBtn = this.btnCancel
             } else
                 this.defBtn = null
-            if (this.defBtn && !settings.input)
+            if (this.defBtn && !settings.input && !settings.extendedFocusables)
                 setTimeout(() => this.defBtn.focus())
         }
 
-        // TODO Slot (field with checkbox (rename -> checkbox))
         // TODO Slide left
         // TODO Slide right
         
@@ -361,6 +363,8 @@ class DialogBoxComponent extends HTMLElement {
             this.focusables = []
             if (settings.input)
                 this.focusables.push(this.input)
+            if (settings.extendedFocusables)
+                this.focusables = this.focusables.concat(settings.extendedFocusables)
             setWidths()
             this.focusIndex = 0 
             this.focusables[this.focusIndex].focus()        
@@ -416,7 +420,12 @@ class DialogBoxComponent extends HTMLElement {
         const transitionend = () => {
             this.fader.removeEventListener("transitionend", transitionend)
             this.dialogroot.classList.add("none")
-            this.resolveDialog({result, input})
+            const dialogResult = {result}
+            if (input)
+                dialogResult.input = input
+            if ((result == RESULT_OK || result == RESULT_YES) && this.onExtendedResult)
+                this.onExtendedResult(dialogResult)
+            this.resolveDialog(dialogResult)
         }
 
         this.fader.addEventListener("transitionend", transitionend)
