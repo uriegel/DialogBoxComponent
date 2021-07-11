@@ -39,10 +39,9 @@ const chkbx1 = document.getElementById("chkbx1")
 const chkbx2 = document.getElementById("chkbx2")
 const chkbx3 = document.getElementById("chkbx3")
 const extendedFocusables = [chkbx1, chkbx2, chkbx3]
-const dialog = document.querySelector('dialog-box-component')
 
 showDialogButton.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Standard",
         btnOk: true,
         btnCancel: true
@@ -52,7 +51,7 @@ showDialogButton.onclick = async () => {
 
 showDialogButton2.onclick = async () => {
     extended.classList.remove("none")
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Standard extended",
         btnOk: true,
         btnCancel: true,
@@ -65,7 +64,7 @@ showDialogButton2.onclick = async () => {
 
 showDialogButton21.onclick = async () => {
     extended.classList.remove("none")
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Standard extended",
         btnOk: true,
         input: true,
@@ -80,7 +79,7 @@ showDialogButton21.onclick = async () => {
 }
 
 showDialogButton3.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Slide",
         slide: true,
         btnOk: true,
@@ -100,7 +99,7 @@ showDialogButton4.onclick = async () => {
 }
 
 showDialogButton5.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "3 Knöpfe",
         btnYes: true,
         btnNo: true,
@@ -110,7 +109,7 @@ showDialogButton5.onclick = async () => {
 }
 
 showDialogButton6.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Der Text input:",
         input: true,
         inputText: "The text input",
@@ -122,7 +121,7 @@ showDialogButton6.onclick = async () => {
 }
 
 showDialogButton7.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Ok nur", 
         btnOk: true
     })    
@@ -130,7 +129,7 @@ showDialogButton7.onclick = async () => {
 }
 
 showDialogButton8.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Ja und nein", 
         btnYes: true,
         btnNo: true
