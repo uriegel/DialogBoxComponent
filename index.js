@@ -33,6 +33,7 @@ const showDialogButton3 = document.getElementById("showDialogButton3")
 const showDialogButton4 = document.getElementById("showDialogButton4")
 const showDialogButton5 = document.getElementById("showDialogButton5")
 const showDialogButton6 = document.getElementById("showDialogButton6")
+const showDialogButton61 = document.getElementById("showDialogButton61")
 const showDialogButton7 = document.getElementById("showDialogButton7")
 const showDialogButton8 = document.getElementById("showDialogButton8")
 const chkbx1 = document.getElementById("chkbx1")
@@ -89,7 +90,7 @@ showDialogButton3.onclick = async () => {
 }
 
 showDialogButton4.onclick = async () => {
-    const res = await dialog.show({
+    const res = await dialogBoxComponent.show({
         text: "Slide reverse",
         slideReverse: true,
         btnOk: true,
@@ -116,6 +117,19 @@ showDialogButton6.onclick = async () => {
         btnOk: true,
         btnCancel: true,
         defBtnCancel: true
+    })    
+    console.log("Dialog closed", res)
+}
+
+showDialogButton61.onclick = async () => {
+    const res = await dialogBoxComponent.show({
+        text: "Datei umbenennen:",
+        input: true,
+        inputText: "Apocalypse Now.mp4",
+        inputSelectRange: [0, 14],
+        btnOk: true,
+        btnCancel: true,
+        defBtnOk: true
     })    
     console.log("Dialog closed", res)
 }
