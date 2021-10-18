@@ -1,16 +1,14 @@
-import './DialogBoxComponent.js'
+import './DialogBox.js'
 
 const dialogBoxComponent = document.getElementById('dialogBoxComponent')
 const themeChooser = document.getElementById("themeChooser")
 const extended = document.getElementById("extended")
 themeChooser.onchange = () => {
     const changeTheme = theme => {
-        ["themeBlue", "themeAdwaita", "themeAdwaitaDark"].forEach(n => {
+        ["themeBlue", "themeAdwaita", "themeAdwaitaDark"].forEach(n => 
             document.body.classList.remove(n)    
-            dialogBoxComponent.classList.remove(n)    
-        })
+        )
         document.body.classList.add(theme)    
-        dialogBoxComponent.classList.add(theme)        
     }
 
     switch (themeChooser.selectedIndex) {
