@@ -1,4 +1,4 @@
-import './DialogBox.js'
+import '../src/DialogBox.js'
 
 const dialogBoxComponent = document.getElementById('dialogBoxComponent')
 const themeChooser = document.getElementById("themeChooser")

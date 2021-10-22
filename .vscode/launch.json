@@ -5,22 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
             "request": "launch",
-            "name": "Debug executable 'DialogBoxComponent'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=DialogBoxComponent",
-                    "--package=DialogBoxComponent"
-                ],
-                "filter": {
-                    "name": "DialogBoxComponent",
-                    "kind": "bin"
-                }
-            },
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/test/bin/Debug/net5.0/test.dll",
             "args": [],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
         }
+
     ]
 }

@@ -1,9 +1,0 @@
-[package]
-name = "DialogBoxComponent"
-version = "0.1.0"
-edition = "2018"
-
-[dependencies]
-tokio = { version = "1.5", features = ["full"] }
-warp = "0.3"
-chrono = "0.4"
