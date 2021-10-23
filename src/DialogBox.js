@@ -34,6 +34,7 @@ export class DialogBox extends HTMLElement {
             --dbc-button-outlinestyle: solid;
             --dbc-button-outlineoffset: 1px;
             --dbc-input-selection-color: blue;
+            --dbc-animation-duration: 0.3s;
         }`)
 
         this.attachShadow({ mode: 'open'})
@@ -53,7 +54,7 @@ export class DialogBox extends HTMLElement {
                     top: 0px;
                     opacity: 1;
                     background-color: var(--dbc-fader-color);
-                    transition: opacity 0.3s;
+                    transition: opacity var(--dbc-animation-duration);
                 }
                 .none {
                     display: none;
@@ -71,7 +72,7 @@ export class DialogBox extends HTMLElement {
                     right: 0;
                     bottom: 0;                    
                     transform: translateX(0%);
-                    transition: transform 0.3s;
+                    transition: transform var(--dbc-animation-duration);
                 }
                 .dialogContainer.leftTranslated {
                     transform: translateX(-50%);
@@ -88,7 +89,7 @@ export class DialogBox extends HTMLElement {
                     background-color: var(--dbc-main-background-color);
                     z-index: 10;    
                     box-shadow: 5px 4px 8px 2px rgba(0, 0, 0, 0.35), 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
-                    transition: opacity 0.3s;
+                    transition: opacity var(--dbc-animation-duration);
                 }
                 .dialog.faded {
                     opacity: 0;
@@ -130,7 +131,7 @@ export class DialogBox extends HTMLElement {
                     text-align: center;
                     padding: var(--dbc-button-padding);
                     /* line-height: 20px; */
-                    transition: background-color 0.3s, outline-color 400ms;
+                    transition: background-color var(--dbc-animation-duration), outline-color 400ms;
                     border-radius: var(--dbc-button-cornerradius);
                     margin-left: var(--dbc-button-marginleft);
                     border-color: var(--dbc-button-bordercolor);
