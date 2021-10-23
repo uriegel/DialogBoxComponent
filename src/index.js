@@ -1,1 +1,1 @@
-export * from './DialogBox'
+export * from './DialogBox.js'

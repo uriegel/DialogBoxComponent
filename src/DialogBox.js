@@ -2,12 +2,12 @@ async function nextTick() {
     return new Promise(res => setTimeout(() => res()))
 }
 
-const RESULT_OK = 1
-const RESULT_YES = 2
-const RESULT_NO = 3
-const RESULT_CANCEL = 4
+export const RESULT_OK = 1
+export const RESULT_YES = 2
+export const RESULT_NO = 3
+export const RESULT_CANCEL = 4
 
-class DialogBox extends HTMLElement {
+export class DialogBox extends HTMLElement {
     constructor() {
         super()
 
