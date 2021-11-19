@@ -94,7 +94,7 @@ export class DialogBox extends HTMLElement {
                 .dialog.faded {
                     opacity: 0;
                 }
-                .dialogContent {
+                #dialogContent {
                     display: flex;
                     flex-direction: column;    
                     box-sizing: border-box;
@@ -172,7 +172,7 @@ export class DialogBox extends HTMLElement {
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
                 <div class="dialog faded" :class="{fullscreen: fullscreen}">
-                    <div class="dialogContent">
+                    <div id="dialogContent">
                         <p id="text" class="none"></p>
                         <input id="input" class="none" onClick="this.select();">
                         <slot></slot>
@@ -204,6 +204,7 @@ export class DialogBox extends HTMLElement {
         this.fader = this.shadowRoot.querySelector('.fader')
         this.dialog = this.shadowRoot.querySelector('.dialog')
         this.text = this.shadowRoot.querySelector('#text')
+        this.dialogContent = this.shadowRoot.querySelector('#dialogContent')
         this.input = this.shadowRoot.querySelector('#input')
         this.btnOk = this.shadowRoot.querySelector('#btnOk')
         this.btnYes = this.shadowRoot.querySelector('#btnYes')
@@ -347,7 +348,12 @@ export class DialogBox extends HTMLElement {
             this.btnOk.classList.remove("default")                
             this.btnYes.classList.remove("default")                
             this.btnNo.classList.remove("default")                
-            this.btnCancel.classList.remove("default")                
+            this.btnCancel.classList.remove("default")      
+            
+            if (settings.extended) {
+                const template = document.getElementById(settings.extended)
+                this.extended = this.dialogContent.appendChild(template.content.cloneNode(true))                
+            }
 
             if (settings.defBtnOk) {
                 this.btnOk.classList.add("default")
@@ -368,6 +374,9 @@ export class DialogBox extends HTMLElement {
                 this.defBtn = null
             if (this.defBtn && !settings.input && !settings.extendedFocusables)
                 setTimeout(() => this.defBtn.focus())
+
+            if (settings.onShow)       
+                settings.onShow()
         }
         
         return new Promise(async res => {
@@ -441,10 +450,18 @@ export class DialogBox extends HTMLElement {
 
     closeDialog(result) {
 
+        if (settings.onClose)       
+            settings.onClose(result)
+
         const input = result == RESULT_OK || result == RESULT_YES ? this.input.value : undefined
 
         const transitionend = () => {
             this.fader.removeEventListener("transitionend", transitionend)
+
+            if (this.extended)
+                this.dialogContent.removeChild(this.dialogContent.children[this.dialogContent.children.length-1])
+            this.extended = undefined
+
             this.dialogroot.classList.add("none")
             this.dialogContainer.classList.remove("rightTranslated");
             this.dialogContainer.classList.remove("leftTranslated");
