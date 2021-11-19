@@ -175,7 +175,6 @@ export class DialogBox extends HTMLElement {
                     <div id="dialogContent">
                         <p id="text" class="none"></p>
                         <input id="input" class="none" onClick="this.select();">
-                        <slot></slot>
                     </div>
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" 
@@ -377,6 +376,8 @@ export class DialogBox extends HTMLElement {
 
             if (settings.onShow)       
                 settings.onShow()
+            
+            this.onClose = settings.onClose
         }
         
         return new Promise(async res => {
@@ -450,8 +451,8 @@ export class DialogBox extends HTMLElement {
 
     closeDialog(result) {
 
-        if (settings.onClose)       
-            settings.onClose(result)
+        if (this.onClose)       
+            this.onClose(result)
 
         const input = result == RESULT_OK || result == RESULT_YES ? this.input.value : undefined
 
