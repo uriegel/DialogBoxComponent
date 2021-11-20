@@ -42,7 +42,6 @@ const chkbx3 = document.getElementById("chkbx3")
 const extendedFocusables = [chkbx1, chkbx2, chkbx3]
 
 showDialogButton.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Standard",
         btnOk: true,
@@ -52,11 +51,11 @@ showDialogButton.onclick = async () => {
 }
 
 showDialogButton2.onclick = async () => {
-    extended.classList.remove("none")
     const res = await dialogBoxComponent.show({
         text: "Standard extended",
         btnOk: true,
         btnCancel: true,
+        extended: "extended",
         extendedFocusables,
         defBtnCancel: true
     })    
@@ -64,13 +63,13 @@ showDialogButton2.onclick = async () => {
 }
 
 showDialogButton21.onclick = async () => {
-    extended.classList.remove("none")
     const res = await dialogBoxComponent.show({
         text: "Standard extended",
         btnOk: true,
         input: true,
         inputText: "The text input",
         btnCancel: true,
+        extended: "extended",
         extendedFocusables,
         onExtendedResult: res => res.extended = true,
         defBtnCancel: true
@@ -79,7 +78,6 @@ showDialogButton21.onclick = async () => {
 }
 
 showDialogButton3.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Slide",
         slide: true,
@@ -90,7 +88,6 @@ showDialogButton3.onclick = async () => {
 }
 
 showDialogButton4.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Slide reverse",
         slideReverse: true,
@@ -101,7 +98,6 @@ showDialogButton4.onclick = async () => {
 }
 
 showDialogButton5.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "3 Knöpfe",
         btnYes: true,
@@ -112,7 +108,6 @@ showDialogButton5.onclick = async () => {
 }
 
 showDialogButton6.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Der Text input:",
         input: true,
@@ -125,7 +120,6 @@ showDialogButton6.onclick = async () => {
 }
 
 showDialogButton61.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Datei umbenennen:",
         input: true,
@@ -139,7 +133,6 @@ showDialogButton61.onclick = async () => {
 }
 
 showDialogButton7.onclick = async () => {
-    extended.classList.add("none")
     const res = await dialogBoxComponent.show({
         text: "Ok nur", 
         btnOk: true

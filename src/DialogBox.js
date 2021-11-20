@@ -36,6 +36,7 @@ export class DialogBox extends HTMLElement {
             --dbc-input-selection-color: blue;
             --dbc-animation-duration: 0.3s;
         }`)
+        style.sheet.insertRule('.wdb-none { display: none }') 
 
         this.attachShadow({ mode: 'open'})
         
@@ -175,7 +176,7 @@ export class DialogBox extends HTMLElement {
                     <div class="dialogContent">
                         <p id="text" class="none"></p>
                         <input id="input" class="none" onClick="this.select();">
-                        <slot></slot>
+                        <slot id="extendedContent"></slot>
                     </div>                    
                     <div class="buttons">
                         <div id="btnOk" tabindex="1" 
@@ -209,6 +210,7 @@ export class DialogBox extends HTMLElement {
         this.btnYes = this.shadowRoot.querySelector('#btnYes')
         this.btnNo = this.shadowRoot.querySelector('#btnNo')
         this.btnCancel = this.shadowRoot.querySelector('#btnCancel')
+        this.extendedContent = this.shadowRoot.querySelector('#extendedContent')
     }
     connectedCallback() {
         this.btnOk.onclick = () => this.closeDialog(RESULT_OK)
@@ -267,7 +269,13 @@ export class DialogBox extends HTMLElement {
                 btn.classList.add("none")
         }
 
+        this.extendedContent
+            .assignedElements()
+            .forEach(n => n.classList.add("wdb-none"))
         this.onExtendedResult = settings.onExtendedResult
+
+        if (settings.extended) 
+            document.getElementById(settings.extended).classList.remove("wdb-none")
 
         if (settings.text) {
             this.text.classList.remove("none")
@@ -368,11 +376,6 @@ export class DialogBox extends HTMLElement {
                 this.defBtn = null
             if (this.defBtn && !settings.input && !settings.extendedFocusables)
                 setTimeout(() => this.defBtn.focus())
-
-            if (settings.onShow)       
-                settings.onShow()
-            
-            this.onClose = settings.onClose
         }
         
         return new Promise(async res => {
@@ -445,10 +448,6 @@ export class DialogBox extends HTMLElement {
     }
 
     closeDialog(result) {
-
-        if (this.onClose)       
-            this.onClose(result)
-
         const input = result == RESULT_OK || result == RESULT_YES ? this.input.value : undefined
 
         const transitionend = () => {
