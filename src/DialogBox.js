@@ -1,6 +1,3 @@
-async function nextTick() {
-    return new Promise(res => setTimeout(() => res()))
-}
 
 export const RESULT_OK = 1
 export const RESULT_YES = 2
@@ -379,14 +376,26 @@ export class DialogBox extends HTMLElement {
         }
         
         return new Promise(async res => {
-            this.dialogroot.classList.remove("none")
             this.slide = settings.slide
             this.slideReverse = settings.slideReverse
             if (settings.slide)
                 this.dialogContainer.classList.add("leftTranslated")
             if (settings.slideReverse)
                 this.dialogContainer.classList.add("rightTranslated")
-            await nextTick()
+            this.dialogroot.classList.remove("none")
+
+            const checkVisible = async () => {
+                return new Promise(res => {
+                    var observer = new IntersectionObserver((e, o)  => {
+                        o.unobserve(this.dialogroot)
+                        console.log("e[0].intersectionRatio > 0", e[0].intersectionRatio > 0)
+                        res()
+                    }, { root: document.documentElement })
+                    observer.observe(this.dialogroot)
+                })
+            }
+            await checkVisible()
+    
             this.fader.classList.remove("faded")
             this.dialog.classList.remove("faded")
             this.dialogContainer.classList.remove("leftTranslated")
