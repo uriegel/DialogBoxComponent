@@ -388,7 +388,6 @@ export class DialogBox extends HTMLElement {
                 return new Promise(res => {
                     var observer = new IntersectionObserver((e, o)  => {
                         o.unobserve(this.dialogroot)
-                        console.log("e[0].intersectionRatio > 0", e[0].intersectionRatio > 0)
                         res()
                     }, { root: document.documentElement })
                     observer.observe(this.dialogroot)
