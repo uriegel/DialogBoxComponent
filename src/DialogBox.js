@@ -217,32 +217,40 @@ export class DialogBox extends HTMLElement {
     connectedCallback() {
         this.btnOk.onclick = () => this.closeDialog(RESULT_OK)
         this.btnOk.onkeydown = evt => {
-            if (evt.which == 13 || evt.which == 32) 
+            if (evt.which == 13 || evt.which == 32) {
                 this.closeDialog(RESULT_OK)
+                evt.stopPropagation()
+            }
         }
         this.btnOk.onfocus = () => this.focusButton(true)
         this.btnOk.onblur = () => this.focusButton(false)
 
         this.btnYes.onclick = () => this.closeDialog(RESULT_YES)
         this.btnYes.onkeydown = evt => {
-            if (evt.which == 13 || evt.which == 32) 
+            if (evt.which == 13 || evt.which == 32) {
                 this.closeDialog(RESULT_YES)
+                evt.stopPropagation()
+            }
         }
         this.btnYes.onfocus = () => this.focusButton(true)
         this.btnYes.onblur = () => this.focusButton(false)
 
         this.btnNo.onclick = () => this.closeDialog(RESULT_NO)
         this.btnNo.onkeydown = evt => {
-            if (evt.which == 13 || evt.which == 32) 
+            if (evt.which == 13 || evt.which == 32) {
                 this.closeDialog(RESULT_NO)
+                evt.stopPropagation()
+            }
         }
         this.btnNo.onfocus = () => this.focusButton(true)
         this.btnNo.onblur = () => this.focusButton(false)
 
         this.btnCancel.onclick = () => this.closeDialog(RESULT_CANCEL)
         this.btnCancel.onkeydown = evt => {
-            if (evt.which == 13 || evt.which == 32) 
+            if (evt.which == 13 || evt.which == 32) {
                 this.closeDialog(RESULT_CANCEL)
+                evt.stopPropagation()
+            }
         }
         this.btnCancel.onfocus = () => this.focusButton(true)
         this.btnCancel.onblur = () => this.focusButton(false)
