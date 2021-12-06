@@ -34,6 +34,7 @@ const showDialogButton6 = document.getElementById("showDialogButton6")
 const showDialogButton61 = document.getElementById("showDialogButton61")
 const showDialogButton7 = document.getElementById("showDialogButton7")
 const showDialogButton8 = document.getElementById("showDialogButton8")
+const showDialogButton9 = document.getElementById("showDialogButton9")
 
 const extended = document.getElementById("extended")
 const chkbx1 = document.getElementById("chkbx1")
@@ -145,6 +146,16 @@ showDialogButton8.onclick = async () => {
         text: "Ja und nein", 
         btnYes: true,
         btnNo: true
+    })    
+    console.log("Dialog closed", res)
+}
+
+showDialogButton9.onclick = async () => {
+    const res = await dialogBoxComponent.show({
+        text: "Fullscreen dialog",
+        btnOk: true,
+        fullscreen: true,
+        btnCancel: true
     })    
     console.log("Dialog closed", res)
 }

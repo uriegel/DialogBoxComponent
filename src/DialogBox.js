@@ -92,8 +92,13 @@ export class DialogBox extends HTMLElement {
                 .dialog.faded {
                     opacity: 0;
                 }
+                .dialog.fullscreen{
+                    width: 100%;
+                    height: 90%;
+                }
                 .dialogContent {
                     display: flex;
+                    flex-grow: 1;
                     flex-direction: column;    
                     box-sizing: border-box;
                     padding: 30px 30px 0px 30px;
@@ -164,12 +169,12 @@ export class DialogBox extends HTMLElement {
                     outline-width: 1px;
                     outline-style: var(--dbc-button-outlinestyle);
                     outline-offset: var(--dbc-button-outlineoffset);
-                }                           
+                }                         
             </style>
             <div class='dialogroot none'>
                 <div class='fader faded'></div>
                 <div class="dialogContainer">
-                <div class="dialog faded" :class="{fullscreen: fullscreen}">
+                <div class="dialog faded">
                     <div class="dialogContent">
                         <p id="text" class="none"></p>
                         <input id="input" class="none" onClick="this.select();">
@@ -323,6 +328,11 @@ export class DialogBox extends HTMLElement {
         this.no = settings.btnNo
 
         const setWidths = () => {
+            if (settings.fullscreen)
+                this.dialog.classList.add("fullscreen")
+            else
+                this.dialog.classList.remove("fullscreen")
+
             let width = 0
             if (settings.btnOk) {
                 this.focusables.push(this.btnOk)
@@ -340,14 +350,17 @@ export class DialogBox extends HTMLElement {
                 this.focusables.push(this.btnCancel)
                 width = Math.max(width, this.btnCancel.clientWidth)
             }
+
+            const flexGrowButton = parseInt(getComputedStyle(document.body).getPropertyValue('--dbc-button-flexgrow'), 10);
+            const buttonWidth = flexGrowButton && settings.fullscreen ? `10px` : `${width}px`
             if (settings.btnOk)
-                this.btnOk.style.width = `${width}px`
+                this.btnOk.style.width = buttonWidth
             if (settings.btnYes)
-                this.btnYes.style.width = `${width}px`
+                this.btnYes.style.width = buttonWidth
             if (settings.btnNo)
-                this.btnNo.style.width = `${width}px`
+                this.btnNo.style.width = buttonWidth
             if (settings.btnCancel)
-                this.btnCancel.style.width = `${width}px`
+                this.btnCancel.style.width = buttonWidth
 
             this.btnOk.classList.remove("default")                
             this.btnYes.classList.remove("default")                
@@ -497,7 +510,3 @@ export class DialogBox extends HTMLElement {
 
 customElements.define('dialog-box', DialogBox)
 
-// TODO all slots elements with display none
-// TODO set id in settings to display extended content
-// TODO onShow
-// TODO onHide
