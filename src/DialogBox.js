@@ -254,8 +254,11 @@ export class DialogBox extends HTMLElement {
                 this.input.select()
         })
 
-        this.dialog.addEventListener("focusin", () => this.focusIndex = 
-            this.focusables.findIndex(n => n == this.shadowRoot.activeElement || n == document.activeElement))
+        this.dialog.addEventListener("focusin", () => {
+            this.focusIndex = this.focusables.findIndex(n => n == this.shadowRoot.activeElement || n == document.activeElement)
+            if (this.focusIndex == -1)
+                this.focusIndex = 0
+        })
 
         this.dialog.onkeydown = evt => this.onKeydown(evt)
     }
