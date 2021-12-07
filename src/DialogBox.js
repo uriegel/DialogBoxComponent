@@ -491,9 +491,13 @@ export class DialogBox extends HTMLElement {
 
         this.fader.addEventListener("transitionend", transitionend)
         if (this.slide) 
-            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES ? "rightTranslated" : "leftTranslated")    
+            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES || (result == RESULT_NO && this.cancel) 
+            ? "rightTranslated" 
+            : "leftTranslated")    
         if (this.slideReverse) 
-            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES ? "leftTranslated" : "rightTranslated")    
+            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES || (result == RESULT_NO && this.cancel) 
+            ? "leftTranslated" 
+            : "rightTranslated")    
         this.fader.classList.add("faded")
         this.dialog.classList.add("faded")
 
