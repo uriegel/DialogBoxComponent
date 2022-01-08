@@ -11,27 +11,27 @@ export class DialogBox extends HTMLElement {
         var style = document.createElement("style")
         document.head.appendChild(style)
         style.sheet.insertRule(`:root {
-            --dbc-main-background-color: white;
-            --dbc-main-color: black;
-            --dbc-fader-color: rgba(0, 0, 0, 0.50);            
-            --dbc-button-color: white;
-            --dbc-button-background-color: blue;
-            --dbc-button-hover-background-color: #7979ff;
-            --dbc-button-active-background-color: #01018e;
-            --dbc-button-focus-color: blue;    
-            --dbc-button-margin: 20px 30px 30px 30px;
-            --dbc-button-flexgrow: 0;
-            --dbc-button-marginleft: 5px;
-            --dbc-button-cornerradius: 3px;
-            --dbc-button-bordercolor: transparent;
-            --dbc-button-borderstyle: none;
-            --dbc-button-borderwidth: 0px;
-            --dbc-button-buttomradius: 3px;
-            --dbc-button-padding: 2px 7px;
-            --dbc-button-outlinestyle: solid;
-            --dbc-button-outlineoffset: 1px;
-            --dbc-input-selection-color: blue;
-            --dbc-animation-duration: 0.3s;
+            --wdb-main-background-color: white;
+            --wdb-main-color: black;
+            --wdb-fader-color: rgba(0, 0, 0, 0.50);            
+            --wdb-button-color: white;
+            --wdb-button-background-color: blue;
+            --wdb-button-hover-background-color: #7979ff;
+            --wdb-button-active-background-color: #01018e;
+            --wdb-button-focus-color: blue;    
+            --wdb-button-margin: 20px 30px 30px 30px;
+            --wdb-button-flexgrow: 0;
+            --wdb-button-marginleft: 5px;
+            --wdb-button-cornerradius: 3px;
+            --wdb-button-bordercolor: transparent;
+            --wdb-button-borderstyle: none;
+            --wdb-button-borderwidth: 0px;
+            --wdb-button-buttomradius: 3px;
+            --wdb-button-padding: 2px 7px;
+            --wdb-button-outlinestyle: solid;
+            --wdb-button-outlineoffset: 1px;
+            --wdb-input-selection-color: blue;
+            --wdb-animation-duration: 0.3s;
         }`)
         style.sheet.insertRule('.wdb-none { display: none }') 
 
@@ -51,8 +51,8 @@ export class DialogBox extends HTMLElement {
                     height: 100%;
                     top: 0px;
                     opacity: 1;
-                    background-color: var(--dbc-fader-color);
-                    transition: opacity var(--dbc-animation-duration);
+                    background-color: var(--wdb-fader-color);
+                    transition: opacity var(--wdb-animation-duration);
                 }
                 .none {
                     display: none;
@@ -70,7 +70,7 @@ export class DialogBox extends HTMLElement {
                     right: 0;
                     bottom: 0;                    
                     transform: translateX(0%);
-                    transition: transform var(--dbc-animation-duration);
+                    transition: transform var(--wdb-animation-duration);
                 }
                 .dialogContainer.leftTranslated {
                     transform: translateX(-50%);
@@ -83,11 +83,11 @@ export class DialogBox extends HTMLElement {
                     margin: 30px;
                     flex-direction: column;    
                     border-radius: 5px;
-                    color: var(--dbc-main-color);
-                    background-color: var(--dbc-main-background-color);
+                    color: var(--wdb-main-color);
+                    background-color: var(--wdb-main-background-color);
                     z-index: 10;    
                     box-shadow: 5px 4px 8px 2px rgba(0, 0, 0, 0.35), 0px 0px 20px 2px rgba(0, 0, 0, 0.25);
-                    transition: opacity var(--dbc-animation-duration);
+                    transition: opacity var(--wdb-animation-duration);
                 }
                 .dialog.faded {
                     opacity: 0;
@@ -104,71 +104,71 @@ export class DialogBox extends HTMLElement {
                     padding: 30px 30px 0px 30px;
                 }
                 #input {
-                    background-color: var(--dbc-main-background-color);
-                    color: var(--dbc-main-color);
+                    background-color: var(--wdb-main-background-color);
+                    color: var(--wdb-main-color);
                     border-color: gray;
                     border-style: solid;
                     border-width: 1px;
                 }
                 #input:focus {
-                    outline-color: var(--dbc-input-selection-color);
+                    outline-color: var(--wdb-input-selection-color);
                     border-color: transparent;
                     outline-width: 1px;
                     outline-style: solid;
                 }
                 #input::selection {
                     color: white;
-                    background-color: var(--dbc-input-selection-color);
+                    background-color: var(--wdb-input-selection-color);
                 }                
                 .buttons {
                     display: flex;
-                    margin: var(--dbc-button-margin);
+                    margin: var(--wdb-button-margin);
                 }
                 .dialogButton {
                     display: inline-block;
-                    flex-grow: var(--dbc-button-flexgrow);
-                    background-color: var(--dbc-button-background-color);
-                    outline-color: var(--dbc-main-background-color);
+                    flex-grow: var(--wdb-button-flexgrow);
+                    background-color: var(--wdb-button-background-color);
+                    outline-color: var(--wdb-main-background-color);
                     user-select: none;
-                    color: var(--dbc-button-color);
+                    color: var(--wdb-button-color);
                     text-align: center;
-                    padding: var(--dbc-button-padding);
+                    padding: var(--wdb-button-padding);
                     /* line-height: 20px; */
-                    transition: background-color var(--dbc-animation-duration), outline-color 400ms;
-                    border-radius: var(--dbc-button-cornerradius);
-                    margin-left: var(--dbc-button-marginleft);
-                    border-color: var(--dbc-button-bordercolor);
-                    border-style: var(--dbc-button-borderstyle);
-                    border-width: var(--dbc-button-borderwidth);
+                    transition: background-color var(--wdb-animation-duration), outline-color 400ms;
+                    border-radius: var(--wdb-button-cornerradius);
+                    margin-left: var(--wdb-button-marginleft);
+                    border-color: var(--wdb-button-bordercolor);
+                    border-style: var(--wdb-button-borderstyle);
+                    border-width: var(--wdb-button-borderwidth);
                 }                
                 .dialogButton.none {
                     display: none;
                 }
                 .firstButton {
                     margin-left: auto;
-                    border-bottom-left-radius: var(--dbc-button-buttomradius);
-                    border-left-width: var(--dbc-button-first-borderwidth);
+                    border-bottom-left-radius: var(--wdb-button-buttomradius);
+                    border-left-width: var(--wdb-button-first-borderwidth);
                 }                
                 .lastButton {
-                    border-bottom-right-radius: var(--dbc-button-buttomradius);
+                    border-bottom-right-radius: var(--wdb-button-buttomradius);
                 }                
                 .dialogButton:hover {
-                    background-color: var(--dbc-button-hover-background-color);
+                    background-color: var(--wdb-button-hover-background-color);
                 }     
                 .dialogButton:active, .buttonActive {
-                    background-color: var(--dbc-button-active-background-color);
+                    background-color: var(--wdb-button-active-background-color);
                 }
                 .dialogButton.default {
                     outline-color: gray;
                     outline-width: 1px;
-                    outline-style: var(--dbc-button-outlinestyle);
-                    outline-offset: var(--dbc-button-outlineoffset);
+                    outline-style: var(--wdb-button-outlinestyle);
+                    outline-offset: var(--wdb-button-outlineoffset);
                 }
                 .dialogButton:focus {
-                    outline-color: var(--dbc-button-focus-color);
+                    outline-color: var(--wdb-button-focus-color);
                     outline-width: 1px;
-                    outline-style: var(--dbc-button-outlinestyle);
-                    outline-offset: var(--dbc-button-outlineoffset);
+                    outline-style: var(--wdb-button-outlinestyle);
+                    outline-offset: var(--wdb-button-outlineoffset);
                 }                         
             </style>
             <div class='dialogroot none'>
@@ -287,8 +287,9 @@ export class DialogBox extends HTMLElement {
             .forEach(n => n.classList.add("wdb-none"))
         this.onExtendedResult = settings.onExtendedResult
 
-        if (settings.extended) 
-            document.getElementById(settings.extended).classList.remove("wdb-none")
+        const extendedContent = settings.extended ? document.getElementById(settings.extended) : null
+        if (extendedContent) 
+            extendedContent.classList.remove("wdb-none")
 
         if (settings.text) {
             this.text.classList.remove("none")
@@ -362,7 +363,7 @@ export class DialogBox extends HTMLElement {
                 width = Math.max(width, this.btnCancel.clientWidth)
             }
 
-            const flexGrowButton = parseInt(getComputedStyle(document.body).getPropertyValue('--dbc-button-flexgrow'), 10);
+            const flexGrowButton = parseInt(getComputedStyle(document.body).getPropertyValue('--wdb-button-flexgrow'), 10);
             const buttonWidth = flexGrowButton && settings.fullscreen ? `10px` : `${width}px`
             if (settings.btnOk)
                 this.btnOk.style.width = buttonWidth
@@ -395,7 +396,7 @@ export class DialogBox extends HTMLElement {
                 this.defBtn = this.btnCancel
             } else
                 this.defBtn = null
-            if (this.defBtn && !settings.input && !settings.extendedFocusables)
+            if (this.defBtn && !settings.input && !this.extendedFocusables)
                 setTimeout(() => this.defBtn.focus())
         }
         
@@ -429,8 +430,10 @@ export class DialogBox extends HTMLElement {
                 if (settings.inputSelectRange)
                     this.inputSelectRange = settings.inputSelectRange
             }
-            if (settings.extendedFocusables)
-                this.focusables = this.focusables.concat(settings.extendedFocusables)
+            this.extendedFocusables = extendedContent ? [...this.querySelectorAll(".wdb-focusable")] : null
+            console.log("this.extendedFocusables", this.extendedFocusables)
+            if (this.extendedFocusables)
+                this.focusables = this.focusables.concat(this.extendedFocusables)
             setWidths()
             this.focusIndex = 0 
             this.focusables[this.focusIndex].focus()        
@@ -441,18 +444,20 @@ export class DialogBox extends HTMLElement {
     onKeydown(evt) {
         switch (evt.which) {
             case 9: { // tab
-                const active = document.activeElement
                 const setFocus = () => {
                     this.focusIndex = evt.shiftKey ? this.focusIndex - 1 : this.focusIndex + 1
                     if (this.focusIndex >= this.focusables.length)
                         this.focusIndex = 0
                     if (this.focusIndex < 0)
                         this.focusIndex = this.focusables.length - 1
-                    this.focusables[this.focusIndex].focus()
-                    // if (document.activeElement == active)
-                    //     setFocus()    
+                    const element = this.focusables[this.focusIndex]
+                    if (!element.disabled) {
+                        element.focus()
+                        return true
+                    }
+                    return false
                 }
-                setFocus()
+                while (!setFocus());
                 break
             }        
             case 13: // Return

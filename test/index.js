@@ -36,12 +36,6 @@ const showDialogButton7 = document.getElementById("showDialogButton7")
 const showDialogButton8 = document.getElementById("showDialogButton8")
 const showDialogButton9 = document.getElementById("showDialogButton9")
 
-const extended = document.getElementById("extended")
-const chkbx1 = document.getElementById("chkbx1")
-const chkbx2 = document.getElementById("chkbx2")
-const chkbx3 = document.getElementById("chkbx3")
-const extendedFocusables = [chkbx1, chkbx2, chkbx3]
-
 showDialogButton.onclick = async () => {
     const res = await dialogBoxComponent.show({
         text: "Standard",
@@ -57,7 +51,6 @@ showDialogButton2.onclick = async () => {
         btnOk: true,
         btnCancel: true,
         extended: "extended",
-        extendedFocusables,
         defBtnCancel: true
     })    
     console.log("Dialog closed", res)
@@ -71,7 +64,6 @@ showDialogButton21.onclick = async () => {
         inputText: "The text input",
         btnCancel: true,
         extended: "extended",
-        extendedFocusables,
         onExtendedResult: res => res.extended = true,
         defBtnCancel: true
     })    
