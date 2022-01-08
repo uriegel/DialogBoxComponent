@@ -431,7 +431,7 @@ export class DialogBox extends HTMLElement {
                     this.inputSelectRange = settings.inputSelectRange
             }
             this.extendedFocusables = extendedContent ? [...extendedContent.querySelectorAll(".wdb-focusable")] : null
-            if (extendedContent.classList.contains("wdb-focusable"))
+            if (extendedContent && extendedContent.classList.contains("wdb-focusable"))
                 this.focusables = this.focusables.concat([extendedContent])
             if (this.extendedFocusables)
                 this.focusables = this.focusables.concat(this.extendedFocusables)
