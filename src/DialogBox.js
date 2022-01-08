@@ -430,8 +430,9 @@ export class DialogBox extends HTMLElement {
                 if (settings.inputSelectRange)
                     this.inputSelectRange = settings.inputSelectRange
             }
-            this.extendedFocusables = extendedContent ? [...this.querySelectorAll(".wdb-focusable")] : null
-            console.log("this.extendedFocusables", this.extendedFocusables)
+            this.extendedFocusables = extendedContent ? [...extendedContent.querySelectorAll(".wdb-focusable")] : null
+            if (extendedContent.classList.contains("wdb-focusable"))
+                this.focusables = this.focusables.concat([extendedContent])
             if (this.extendedFocusables)
                 this.focusables = this.focusables.concat(this.extendedFocusables)
             setWidths()
