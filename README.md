@@ -8,4 +8,4 @@ const RESULT_CANCEL = 4
 ```
 
 ## Extended content
-add class `wdb-extended` 
+add class `wdb-focusable` 
