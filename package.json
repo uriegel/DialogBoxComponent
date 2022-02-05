@@ -1,7 +1,7 @@
 {
   "name": "web-dialog-box",
   "type":"module",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "A dialog box web component",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -9,8 +9,10 @@
     "src": "src"
   },
   "scripts": {
-    "do publish test": "npm publish --dry-run",
-    "do publish": "npm publish"
+    "typescript": "tsc -p typescript",
+    "typescript-test": "tsc -p test",
+    "do publish test": "npm run typescript && npm publish --dry-run",
+    "do publish": "npm run typescript && npm publish"
   },
   "repository": {
     "type": "git",

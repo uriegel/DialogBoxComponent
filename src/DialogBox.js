@@ -1,16 +1,23 @@
-
-export const RESULT_OK = 1
-export const RESULT_YES = 2
-export const RESULT_NO = 3
-export const RESULT_CANCEL = 4
-
+export var Result;
+(function (Result) {
+    Result[Result["Ok"] = 0] = "Ok";
+    Result[Result["Yes"] = 1] = "Yes";
+    Result[Result["No"] = 2] = "No";
+    Result[Result["Cancel"] = 3] = "Cancel";
+})(Result || (Result = {}));
 export class DialogBox extends HTMLElement {
     constructor() {
-        super()
-
-        var style = document.createElement("style")
-        document.head.appendChild(style)
-        style.sheet.insertRule(`:root {
+        super();
+        this.focusIndex = 0;
+        this.cancel = false;
+        this.no = false;
+        this.focusables = [];
+        this.slide = false;
+        this.slideReverse = false;
+        this.buttonHasFocus = false;
+        const style = document.createElement("style");
+        document.head.appendChild(style);
+        style.sheet?.insertRule(`:root {
             --wdb-main-background-color: white;
             --wdb-main-color: black;
             --wdb-fader-color: rgba(0, 0, 0, 0.50);            
@@ -32,12 +39,10 @@ export class DialogBox extends HTMLElement {
             --wdb-button-outlineoffset: 1px;
             --wdb-input-selection-color: blue;
             --wdb-animation-duration: 0.3s;
-        }`)
-        style.sheet.insertRule('.wdb-none { display: none }') 
-
-        this.attachShadow({ mode: 'open'})
-        
-        const template = document.createElement('template')
+        }`);
+        style.sheet.insertRule('.wdb-none { display: none }');
+        this.attachShadow({ mode: 'open' });
+        const template = document.createElement('template');
         template.innerHTML = `  
             <style>
                 .dialogroot {
@@ -200,334 +205,302 @@ export class DialogBox extends HTMLElement {
                     </div>                
                 </div>                
             </div>
-        ` 
-        this.shadowRoot.appendChild(template.content.cloneNode(true))
-        this.dialogroot = this.shadowRoot.querySelector('.dialogroot')
-        this.dialogContainer = this.shadowRoot.querySelector('.dialogContainer')
-        this.fader = this.shadowRoot.querySelector('.fader')
-        this.dialog = this.shadowRoot.querySelector('.dialog')
-        this.text = this.shadowRoot.querySelector('#text')
-        this.input = this.shadowRoot.querySelector('#input')
-        this.btnOk = this.shadowRoot.querySelector('#btnOk')
-        this.btnYes = this.shadowRoot.querySelector('#btnYes')
-        this.btnNo = this.shadowRoot.querySelector('#btnNo')
-        this.btnCancel = this.shadowRoot.querySelector('#btnCancel')
-        this.extendedContent = this.shadowRoot.querySelector('#extendedContent')
+        `;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.dialogroot = this.shadowRoot.querySelector('.dialogroot');
+        this.dialogContainer = this.shadowRoot.querySelector('.dialogContainer');
+        this.fader = this.shadowRoot.querySelector('.fader');
+        this.dialog = this.shadowRoot.querySelector('.dialog');
+        this.text = this.shadowRoot.querySelector('#text');
+        this.input = this.shadowRoot.querySelector('#input');
+        this.btnOk = this.shadowRoot.querySelector('#btnOk');
+        this.btnYes = this.shadowRoot.querySelector('#btnYes');
+        this.btnNo = this.shadowRoot.querySelector('#btnNo');
+        this.btnCancel = this.shadowRoot.querySelector('#btnCancel');
+        this.extendedContent = this.shadowRoot.querySelector('#extendedContent');
     }
     connectedCallback() {
-        this.btnOk.onclick = () => this.closeDialog(RESULT_OK)
+        this.btnOk.onclick = () => this.closeDialog(Result.Ok);
         this.btnOk.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) {
-                this.closeDialog(RESULT_OK)
-                evt.stopPropagation()
+                this.closeDialog(Result.Ok);
+                evt.stopPropagation();
             }
-        }
-        this.btnOk.onfocus = () => this.focusButton(true)
-        this.btnOk.onblur = () => this.focusButton(false)
-
-        this.btnYes.onclick = () => this.closeDialog(RESULT_YES)
+        };
+        this.btnOk.onfocus = () => this.focusButton(true);
+        this.btnOk.onblur = () => this.focusButton(false);
+        this.btnYes.onclick = () => this.closeDialog(Result.Yes);
         this.btnYes.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) {
-                this.closeDialog(RESULT_YES)
-                evt.stopPropagation()
+                this.closeDialog(Result.Yes);
+                evt.stopPropagation();
             }
-        }
-        this.btnYes.onfocus = () => this.focusButton(true)
-        this.btnYes.onblur = () => this.focusButton(false)
-
-        this.btnNo.onclick = () => this.closeDialog(RESULT_NO)
+        };
+        this.btnYes.onfocus = () => this.focusButton(true);
+        this.btnYes.onblur = () => this.focusButton(false);
+        this.btnNo.onclick = () => this.closeDialog(Result.No);
         this.btnNo.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) {
-                this.closeDialog(RESULT_NO)
-                evt.stopPropagation()
+                this.closeDialog(Result.No);
+                evt.stopPropagation();
             }
-        }
-        this.btnNo.onfocus = () => this.focusButton(true)
-        this.btnNo.onblur = () => this.focusButton(false)
-
-        this.btnCancel.onclick = () => this.closeDialog(RESULT_CANCEL)
+        };
+        this.btnNo.onfocus = () => this.focusButton(true);
+        this.btnNo.onblur = () => this.focusButton(false);
+        this.btnCancel.onclick = () => this.closeDialog(Result.Cancel);
         this.btnCancel.onkeydown = evt => {
             if (evt.which == 13 || evt.which == 32) {
-                this.closeDialog(RESULT_CANCEL)
-                evt.stopPropagation()
+                this.closeDialog(Result.Cancel);
+                evt.stopPropagation();
             }
-        }
-        this.btnCancel.onfocus = () => this.focusButton(true)
-        this.btnCancel.onblur = () => this.focusButton(false)
-
+        };
+        this.btnCancel.onfocus = () => this.focusButton(true);
+        this.btnCancel.onblur = () => this.focusButton(false);
         this.input.onfocus = () => setTimeout(() => {
             if (this.inputSelectRange)
-                this.input.setSelectionRange(this.inputSelectRange[0], this.inputSelectRange[1])
+                this.input.setSelectionRange(this.inputSelectRange[0], this.inputSelectRange[1]);
             else
-                this.input.select()
-        })
-
+                this.input.select();
+        });
         this.dialog.addEventListener("focusin", () => {
-            this.focusIndex = this.focusables.findIndex(n => n == this.shadowRoot.activeElement || n == document.activeElement)
+            this.focusIndex = this.focusables.findIndex(n => n == this.shadowRoot.activeElement || n == document.activeElement);
             if (this.focusIndex == -1)
-                this.focusIndex = 0
-        })
-
-        this.dialog.onkeydown = evt => this.onKeydown(evt)
+                this.focusIndex = 0;
+        });
+        this.dialog.onkeydown = evt => this.onKeydown(evt);
     }
-
     show(settings) {
-
         const showBtn = (btn, show) => {
             if (show) {
-                btn.style.width = null
-                btn.classList.remove("none")
+                btn.style.width = "";
+                btn.classList.remove("none");
             }
-            else 
-                btn.classList.add("none")
-        }
-
+            else
+                btn.classList.add("none");
+        };
         this.extendedContent
             .assignedElements()
-            .forEach(n => n.classList.add("wdb-none"))
-        this.onExtendedResult = settings.onExtendedResult
-
-        const extendedContent = settings.extended ? document.getElementById(settings.extended) : null
-        if (extendedContent) 
-            extendedContent.classList.remove("wdb-none")
-
+            .forEach(n => n.classList.add("wdb-none"));
+        this.onExtendedResult = settings.onExtendedResult;
+        const extendedContent = settings.extended ? document.getElementById(settings.extended) : null;
+        if (extendedContent)
+            extendedContent.classList.remove("wdb-none");
         if (settings.text) {
-            this.text.classList.remove("none")
-            this.text.innerHTML = settings.text
+            this.text.classList.remove("none");
+            this.text.innerHTML = settings.text;
         }
         else
-            this.text.classList.add("none")
-
-        this.input.value = ""
-        if (settings.input) {
-            this.input.classList.remove("none")
-            this.input.value = settings.inputText
+            this.text.classList.add("none");
+        this.input.value = "";
+        if (settings.inputText != undefined) {
+            this.input.classList.remove("none");
+            this.input.value = settings.inputText ?? "";
         }
-        else 
-            this.input.classList.add("none")
-
-        showBtn(this.btnOk, settings.btnOk)
-        showBtn(this.btnYes, settings.btnYes)
-        showBtn(this.btnNo, settings.btnNo)
-        showBtn(this.btnCancel, settings.btnCancel)
-
-        this.btnOk.classList.remove("firstButton")
-        this.btnOk.classList.remove("lastButton")
-        this.btnYes.classList.remove("firstButton")
-        this.btnYes.classList.remove("lastButton")
-        this.btnNo.classList.remove("firstButton")
-        this.btnNo.classList.remove("lastButton")
-        this.btnCancel.classList.remove("firstButton")
-        this.btnCancel.classList.remove("lastButton")
-        const firstButton = settings.btnOk 
+        else
+            this.input.classList.add("none");
+        showBtn(this.btnOk, settings.btnOk);
+        showBtn(this.btnYes, settings.btnYes);
+        showBtn(this.btnNo, settings.btnNo);
+        showBtn(this.btnCancel, settings.btnCancel);
+        this.btnOk.classList.remove("firstButton");
+        this.btnOk.classList.remove("lastButton");
+        this.btnYes.classList.remove("firstButton");
+        this.btnYes.classList.remove("lastButton");
+        this.btnNo.classList.remove("firstButton");
+        this.btnNo.classList.remove("lastButton");
+        this.btnCancel.classList.remove("firstButton");
+        this.btnCancel.classList.remove("lastButton");
+        const firstButton = settings.btnOk
             ? this.btnOk
             : settings.btnYes
-            ? this.btnYes
-            : settings.btnNo
-            ? this.btnNo
-            : this.btnCancel
-        firstButton.classList.add("firstButton")
+                ? this.btnYes
+                : settings.btnNo
+                    ? this.btnNo
+                    : this.btnCancel;
+        firstButton.classList.add("firstButton");
         const lastButton = settings.btnCancel
             ? this.btnCancel
             : settings.btnNo
-            ? this.btnNo
-            : settings.btnYes
-            ? this.btnYes
-            : this.btnOk
-            lastButton.classList.add("lastButton")
-
-        this.cancel = settings.btnCancel
-        this.no = settings.btnNo
-
+                ? this.btnNo
+                : settings.btnYes
+                    ? this.btnYes
+                    : this.btnOk;
+        lastButton.classList.add("lastButton");
+        this.cancel = settings.btnCancel ?? false;
+        this.no = settings.btnNo ?? false;
         const setWidths = () => {
             if (settings.fullscreen)
-                this.dialog.classList.add("fullscreen")
+                this.dialog.classList.add("fullscreen");
             else
-                this.dialog.classList.remove("fullscreen")
-
-            let width = 0
+                this.dialog.classList.remove("fullscreen");
+            let width = 0;
             if (settings.btnOk) {
-                this.focusables.push(this.btnOk)
-                width = this.btnOk.clientWidth
+                this.focusables.push(this.btnOk);
+                width = this.btnOk.clientWidth;
             }
             if (settings.btnYes) {
-                this.focusables.push(this.btnYes)
-                width = Math.max(width, this.btnYes.clientWidth)
+                this.focusables.push(this.btnYes);
+                width = Math.max(width, this.btnYes.clientWidth);
             }
             if (settings.btnNo) {
-                this.focusables.push(this.btnNo)
-                width = Math.max(width, this.btnNo.clientWidth)
+                this.focusables.push(this.btnNo);
+                width = Math.max(width, this.btnNo.clientWidth);
             }
             if (settings.btnCancel) {
-                this.focusables.push(this.btnCancel)
-                width = Math.max(width, this.btnCancel.clientWidth)
+                this.focusables.push(this.btnCancel);
+                width = Math.max(width, this.btnCancel.clientWidth);
             }
-
             const flexGrowButton = parseInt(getComputedStyle(document.body).getPropertyValue('--wdb-button-flexgrow'), 10);
-            const buttonWidth = flexGrowButton && settings.fullscreen ? `10px` : `${width}px`
+            const buttonWidth = flexGrowButton && settings.fullscreen ? `10px` : `${width}px`;
             if (settings.btnOk)
-                this.btnOk.style.width = buttonWidth
+                this.btnOk.style.width = buttonWidth;
             if (settings.btnYes)
-                this.btnYes.style.width = buttonWidth
+                this.btnYes.style.width = buttonWidth;
             if (settings.btnNo)
-                this.btnNo.style.width = buttonWidth
+                this.btnNo.style.width = buttonWidth;
             if (settings.btnCancel)
-                this.btnCancel.style.width = buttonWidth
-
-            this.btnOk.classList.remove("default")                
-            this.btnYes.classList.remove("default")                
-            this.btnNo.classList.remove("default")                
-            this.btnCancel.classList.remove("default")      
-            
+                this.btnCancel.style.width = buttonWidth;
+            this.btnOk.classList.remove("default");
+            this.btnYes.classList.remove("default");
+            this.btnNo.classList.remove("default");
+            this.btnCancel.classList.remove("default");
             if (settings.defBtnOk) {
-                this.btnOk.classList.add("default")
-                this.defBtn = this.btnOk
+                this.btnOk.classList.add("default");
+                this.defBtn = this.btnOk;
             }
             else if (settings.defBtnYes) {
-                this.btnYes.classList.add("default")
-                this.defBtn = this.btnYes
+                this.btnYes.classList.add("default");
+                this.defBtn = this.btnYes;
             }
             else if (settings.defBtnNo) {
-                this.btnNo.classList.add("default")
-                this.defBtn = this.btnNo
+                this.btnNo.classList.add("default");
+                this.defBtn = this.btnNo;
             }
             else if (settings.defBtnCancel) {
-                this.btnCancel.classList.add("default")
-                this.defBtn = this.btnCancel
-            } else
-                this.defBtn = null
-            if (this.defBtn && !settings.input && !this.extendedFocusables)
-                setTimeout(() => this.defBtn.focus())
-        }
-        
-        return new Promise(async res => {
-            this.slide = settings.slide
-            this.slideReverse = settings.slideReverse
+                this.btnCancel.classList.add("default");
+                this.defBtn = this.btnCancel;
+            }
+            else
+                this.defBtn = undefined;
+            if (this.defBtn && settings.inputText == undefined && !this.extendedFocusables)
+                setTimeout(() => this.defBtn?.focus());
+        };
+        return new Promise(async (res) => {
+            this.slide = settings.slide ?? false;
+            this.slideReverse = settings.slideReverse ?? false;
             if (settings.slide)
-                this.dialogContainer.classList.add("leftTranslated")
+                this.dialogContainer.classList.add("leftTranslated");
             if (settings.slideReverse)
-                this.dialogContainer.classList.add("rightTranslated")
-            this.dialogroot.classList.remove("none")
-
+                this.dialogContainer.classList.add("rightTranslated");
+            this.dialogroot.classList.remove("none");
             const checkVisible = async () => {
-                return new Promise(res => {
-                    var observer = new IntersectionObserver((e, o)  => {
-                        o.unobserve(this.dialogroot)
-                        res()
-                    }, { root: document.documentElement })
-                    observer.observe(this.dialogroot)
-                })
-            }
-            await checkVisible()
-    
-            this.fader.classList.remove("faded")
-            this.dialog.classList.remove("faded")
-            this.dialogContainer.classList.remove("leftTranslated")
-            this.dialogContainer.classList.remove("rightTranslated")
-            this.focusables = []
-            if (settings.input) {
-                this.focusables.push(this.input)
+                return new Promise((res) => {
+                    var observer = new IntersectionObserver((e, o) => {
+                        o.unobserve(this.dialogroot);
+                        res();
+                    }, { root: document.documentElement });
+                    observer.observe(this.dialogroot);
+                });
+            };
+            await checkVisible();
+            this.fader.classList.remove("faded");
+            this.dialog.classList.remove("faded");
+            this.dialogContainer.classList.remove("leftTranslated");
+            this.dialogContainer.classList.remove("rightTranslated");
+            this.focusables = [];
+            if (settings.inputText != undefined) {
+                this.focusables.push(this.input);
                 if (settings.inputSelectRange)
-                    this.inputSelectRange = settings.inputSelectRange
+                    this.inputSelectRange = settings.inputSelectRange;
             }
-            this.extendedFocusables = extendedContent ? [...extendedContent.querySelectorAll(".wdb-focusable")] : null
+            this.extendedFocusables = extendedContent ? [...extendedContent.querySelectorAll(".wdb-focusable")] : null;
             if (extendedContent && extendedContent.classList.contains("wdb-focusable"))
-                this.focusables = this.focusables.concat([extendedContent])
+                this.focusables = this.focusables.concat([extendedContent]);
             if (this.extendedFocusables)
-                this.focusables = this.focusables.concat(this.extendedFocusables)
-            setWidths()
-            this.focusIndex = 0 
-            this.focusables[this.focusIndex].focus()        
-            this.resolveDialog = res
-        })
+                this.focusables = this.focusables.concat(this.extendedFocusables);
+            setWidths();
+            this.focusIndex = 0;
+            this.focusables[this.focusIndex].focus();
+            this.resolveDialog = res;
+        });
     }
-
     onKeydown(evt) {
         switch (evt.which) {
             case 9: { // tab
                 const setFocus = () => {
-                    this.focusIndex = evt.shiftKey ? this.focusIndex - 1 : this.focusIndex + 1
+                    this.focusIndex = evt.shiftKey ? this.focusIndex - 1 : this.focusIndex + 1;
                     if (this.focusIndex >= this.focusables.length)
-                        this.focusIndex = 0
+                        this.focusIndex = 0;
                     if (this.focusIndex < 0)
-                        this.focusIndex = this.focusables.length - 1
-                    const element = this.focusables[this.focusIndex]
+                        this.focusIndex = this.focusables.length - 1;
+                    const element = this.focusables[this.focusIndex];
                     if (!element.disabled) {
-                        element.focus()
-                        return true
+                        element.focus();
+                        return true;
                     }
-                    return false
-                }
-                while (!setFocus());
-                break
-            }        
+                    return false;
+                };
+                while (!setFocus())
+                    ;
+                break;
+            }
             case 13: // Return
                 if (this.defBtn && !this.buttonHasFocus) {
-                    const result = 
-                        this.defBtn == this.btnOk
-                        ? RESULT_OK
+                    const result = this.defBtn == this.btnOk
+                        ? Result.Ok
                         : this.defBtn == this.btnYes
-                        ? RESULT_YES
-                        : this.defBtn == this.btnNo
-                        ? RESULT_NO
-                        : RESULT_CANCEL
-                    this.closeDialog(result)
+                            ? Result.Yes
+                            : this.defBtn == this.btnNo
+                                ? Result.No
+                                : Result.Cancel;
+                    this.closeDialog(result);
                 }
-                break
+                break;
             case 27: // ESC
-                if (this.cancel || !this.no) 
-                    this.closeDialog(RESULT_CANCEL)
-                break            
+                if (this.cancel || !this.no)
+                    this.closeDialog(Result.Cancel);
+                break;
             default:
-                return
+                return;
         }
-        evt.preventDefault()
-        evt.stopPropagation()            
+        evt.preventDefault();
+        evt.stopPropagation();
     }
-
     closeDialog(result) {
-        const input = result == RESULT_OK || result == RESULT_YES ? this.input.value : undefined
-
+        const input = result == Result.Ok || result == Result.Yes ? this.input.value : undefined;
         const transitionend = () => {
-            this.fader.removeEventListener("transitionend", transitionend)
-            this.dialogroot.classList.add("none")
+            this.fader.removeEventListener("transitionend", transitionend);
+            this.dialogroot.classList.add("none");
             this.dialogContainer.classList.remove("rightTranslated");
             this.dialogContainer.classList.remove("leftTranslated");
-        }
-
-        this.fader.addEventListener("transitionend", transitionend)
-        if (this.slide) 
-            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES || (result == RESULT_NO && this.cancel) 
-            ? "rightTranslated" 
-            : "leftTranslated")    
-        if (this.slideReverse) 
-            this.dialogContainer.classList.add(result == RESULT_OK || result == RESULT_YES || (result == RESULT_NO && this.cancel) 
-            ? "leftTranslated" 
-            : "rightTranslated")    
-        this.fader.classList.add("faded")
-        this.dialog.classList.add("faded")
-
-        const dialogResult = {result}
-        if (input)
-            dialogResult.input = input
-        if ((result == RESULT_OK || result == RESULT_YES) && this.onExtendedResult)
-            this.onExtendedResult(dialogResult)
-        this.resolveDialog(dialogResult)
+        };
+        this.fader.addEventListener("transitionend", transitionend);
+        if (this.slide)
+            this.dialogContainer.classList.add(result == Result.Ok || result == Result.Yes || (result == Result.No && this.cancel)
+                ? "rightTranslated"
+                : "leftTranslated");
+        if (this.slideReverse)
+            this.dialogContainer.classList.add(result == Result.Ok || result == Result.Yes || (result == Result.No && this.cancel)
+                ? "leftTranslated"
+                : "rightTranslated");
+        this.fader.classList.add("faded");
+        this.dialog.classList.add("faded");
+        const dialogResult = { result, input };
+        if ((result == Result.Ok || result == Result.Yes) && this.onExtendedResult)
+            this.onExtendedResult(dialogResult);
+        this.resolveDialog(dialogResult);
     }
-
     focusButton(focus) {
         if (this.defBtn) {
             if (focus) {
-                this.defBtn.classList.remove("default")
-                this.buttonHasFocus = true
+                this.defBtn.classList.remove("default");
+                this.buttonHasFocus = true;
             }
             else {
-                this.defBtn.classList.add("default")
-                this.buttonHasFocus = false
+                this.defBtn.classList.add("default");
+                this.buttonHasFocus = false;
             }
         }
     }
 }
-
-customElements.define('dialog-box', DialogBox)
-
+customElements.define('dialog-box', DialogBox);
