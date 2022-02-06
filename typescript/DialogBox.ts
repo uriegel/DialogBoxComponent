@@ -447,7 +447,7 @@ export class DialogBox extends HTMLElement {
                 setTimeout(() => this.defBtn?.focus())
         }
         
-        return new Promise(async res => {
+        return new Promise<DialogResult>(async res => {
             this.slide = settings.slide ?? false
             this.slideReverse = settings.slideReverse ?? false
             if (settings.slide)
