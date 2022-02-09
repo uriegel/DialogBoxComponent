@@ -52,7 +52,7 @@ export declare class DialogBox extends HTMLElement {
     private onExtendedResult;
     constructor();
     connectedCallback(): void;
-    show(settings: Settings): Promise<unknown>;
+    show(settings: Settings): Promise<DialogResult>;
     onKeydown(evt: KeyboardEvent): void;
     closeDialog(result: Result): void;
     focusButton(focus: boolean): void;
