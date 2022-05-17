@@ -320,6 +320,8 @@ export class DialogBox extends HTMLElement {
 
     show(settings: Settings) {
 
+        this.dialogClosed()
+
         const showBtn = (btn: HTMLElement, show: boolean | undefined) => {
             if (show) {
                 btn.style.width = ""
@@ -532,17 +534,18 @@ export class DialogBox extends HTMLElement {
         evt.stopPropagation()            
     }
 
+    private dialogClosed = () => {
+        this.fader.removeEventListener("transitionend", this.dialogClosed)
+        this.dialogroot.classList.add("none")
+        this.dialogContainer.classList.remove("rightTranslated");
+        this.dialogContainer.classList.remove("leftTranslated");
+    }
+
     closeDialog(result: Result) {
         const input = result == Result.Ok || result == Result.Yes ? this.input.value : undefined
 
-        const transitionend = () => {
-            this.fader.removeEventListener("transitionend", transitionend)
-            this.dialogroot.classList.add("none")
-            this.dialogContainer.classList.remove("rightTranslated");
-            this.dialogContainer.classList.remove("leftTranslated");
-        }
 
-        this.fader.addEventListener("transitionend", transitionend)
+        this.fader.addEventListener("transitionend", this.dialogClosed)
         if (this.slide) 
             this.dialogContainer.classList.add(result == Result.Ok || result == Result.Yes || (result == Result.No && this.cancel) 
             ? "rightTranslated" 

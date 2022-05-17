@@ -36,6 +36,7 @@ const showDialogButton61 = document.getElementById("showDialogButton61")!
 const showDialogButton7 = document.getElementById("showDialogButton7")!
 const showDialogButton8 = document.getElementById("showDialogButton8")!
 const showDialogButton9 = document.getElementById("showDialogButton9")!
+const showDialogButton10 = document.getElementById("showDialogButton10")!
 
 showDialogButton.onclick = async () => {
     const res = await dialogBoxComponent.show({
@@ -148,4 +149,15 @@ showDialogButton9.onclick = async () => {
         btnCancel: true
     })    
     console.log("Dialog closed", res)
+}
+
+showDialogButton10.onclick = async () => {
+    await dialogBoxComponent.show({
+        text: "First Dialog",
+        btnOk: true
+    })    
+    await dialogBoxComponent.show({
+        text: "Second  Dialog",
+        btnOk: true
+    })    
 }
