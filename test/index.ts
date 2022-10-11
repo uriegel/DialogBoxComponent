@@ -28,6 +28,7 @@ themeChooser.onchange = () => {
 const showDialogButton = document.getElementById("showDialogButton")!
 const showDialogButton2 = document.getElementById("showDialogButton2")!
 const showDialogButton21 = document.getElementById("showDialogButton21")!
+const showDialogButton22 = document.getElementById("showDialogButton22")!
 const showDialogButton3 = document.getElementById("showDialogButton3")!
 const showDialogButton4 = document.getElementById("showDialogButton4")!
 const showDialogButton5 = document.getElementById("showDialogButton5")!
@@ -66,6 +67,17 @@ showDialogButton21.onclick = async () => {
         btnCancel: true,
         extended: "extended",
         onExtendedResult: res => res.extended = true,
+        defBtnCancel: true
+    })    
+    console.log("Dialog closed", res)
+}
+
+showDialogButton22.onclick = async () => {
+    const res = await dialogBoxComponent.show({
+        text: "Standard extended no Controls",
+        btnOk: true,
+        btnCancel: true,
+        extended: "extendedNoControls",
         defBtnCancel: true
     })    
     console.log("Dialog closed", res)
