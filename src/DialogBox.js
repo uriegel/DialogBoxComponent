@@ -427,7 +427,8 @@ export class DialogBox extends HTMLElement {
                 this.focusables = this.focusables.concat(this.extendedFocusables);
             setWidths();
             this.focusIndex = 0;
-            this.focusables[this.focusIndex].focus();
+            if (this.focusables.length > 0)
+                this.focusables[this.focusIndex].focus();
             this.resolveDialog = res;
         });
     }
