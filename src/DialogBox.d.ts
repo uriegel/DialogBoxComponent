@@ -4,11 +4,11 @@ export declare enum Result {
     No = 2,
     Cancel = 3
 }
-export declare type DialogResult = {
+export type DialogResult = {
     result: Result;
     input: string | undefined;
 };
-export declare type Settings = {
+export type Settings = {
     btnOk?: boolean;
     btnYes?: boolean;
     btnNo?: boolean;

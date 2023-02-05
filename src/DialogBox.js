@@ -20,6 +20,7 @@ export class DialogBox extends HTMLElement {
             this.dialogroot.classList.add("none");
             this.dialogContainer.classList.remove("rightTranslated");
             this.dialogContainer.classList.remove("leftTranslated");
+            this.dispatchEvent(new CustomEvent('dialogClosed'));
         };
         const style = document.createElement("style");
         document.head.appendChild(style);

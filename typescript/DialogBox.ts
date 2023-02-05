@@ -538,8 +538,9 @@ export class DialogBox extends HTMLElement {
     private dialogClosed = () => {
         this.fader.removeEventListener("transitionend", this.dialogClosed)
         this.dialogroot.classList.add("none")
-        this.dialogContainer.classList.remove("rightTranslated");
-        this.dialogContainer.classList.remove("leftTranslated");
+        this.dialogContainer.classList.remove("rightTranslated")
+        this.dialogContainer.classList.remove("leftTranslated")
+        this.dispatchEvent(new CustomEvent('dialogClosed'))
     }
 
     closeDialog(result: Result) {
