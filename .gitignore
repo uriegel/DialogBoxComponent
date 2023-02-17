@@ -2,3 +2,4 @@ test/bin
 test/obj
 package-lock.json
 node_modules
+src
