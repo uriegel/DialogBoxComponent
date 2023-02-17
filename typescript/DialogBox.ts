@@ -89,7 +89,7 @@ export class DialogBox extends HTMLElement {
         template.innerHTML = `  
             <style>
                 .dialogroot {
-                    position: absolute;
+                    position: fixed;
                     width: 100%;
                     height: 100%;            
                 }
