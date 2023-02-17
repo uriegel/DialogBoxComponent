@@ -50,6 +50,7 @@ export declare class DialogBox extends HTMLElement {
     private buttonHasFocus;
     private extendedFocusables;
     private onExtendedResult;
+    private dialogStyle;
     constructor();
     connectedCallback(): void;
     show(settings: Settings): Promise<DialogResult>;

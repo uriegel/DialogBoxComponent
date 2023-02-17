@@ -16,15 +16,18 @@ export class DialogBox extends HTMLElement {
         this.slideReverse = false;
         this.buttonHasFocus = false;
         this.dialogClosed = () => {
-            this.fader.removeEventListener("transitionend", this.dialogClosed);
-            this.dialogroot.classList.add("none");
-            this.dialogContainer.classList.remove("rightTranslated");
-            this.dialogContainer.classList.remove("leftTranslated");
-            this.dispatchEvent(new CustomEvent('dialogClosed'));
+            if (!this.dialogroot.classList.contains("none")) {
+                this.fader.removeEventListener("transitionend", this.dialogClosed);
+                this.dialogStyle?.remove();
+                this.dialogroot.classList.add("none");
+                this.dialogContainer.classList.remove("rightTranslated");
+                this.dialogContainer.classList.remove("leftTranslated");
+                this.dispatchEvent(new CustomEvent('dialogClosed'));
+            }
         };
-        const style = document.createElement("style");
-        document.head.appendChild(style);
-        style.sheet?.insertRule(`:root {
+        this.dialogStyle = document.createElement("style");
+        document.head.appendChild(this.dialogStyle);
+        this.dialogStyle.sheet?.insertRule(`:root {
             --wdb-main-background-color: white;
             --wdb-main-color: black;
             --wdb-fader-color: rgba(0, 0, 0, 0.50);            
@@ -47,7 +50,7 @@ export class DialogBox extends HTMLElement {
             --wdb-input-selection-color: blue;
             --wdb-animation-duration: 0.3s;
         }`);
-        style.sheet.insertRule('.wdb-none { display: none }');
+        this.dialogStyle.sheet.insertRule('.wdb-none { display: none }');
         this.attachShadow({ mode: 'open' });
         const template = document.createElement('template');
         template.innerHTML = `  
