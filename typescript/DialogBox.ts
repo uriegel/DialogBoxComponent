@@ -21,6 +21,7 @@ export type Settings = {
     extended?: string
     inputText?: string | undefined
     inputSelectRange?: number[]
+    disableInputSpellCheck?: boolean
     onExtendedResult?: (result: any)=>void
     fullscreen?: boolean
     slide?: boolean
@@ -352,6 +353,7 @@ export class DialogBox extends HTMLElement {
         if (settings.inputText != undefined) {
             this.input.classList.remove("none")
             this.input.value = settings.inputText ?? ""
+            this.input.spellcheck = settings.disableInputSpellCheck ? false : true
         }
         else 
             this.input.classList.add("none")

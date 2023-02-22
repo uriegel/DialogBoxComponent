@@ -64,6 +64,7 @@ showDialogButton21.onclick = async () => {
         text: "Standard extended",
         btnOk: true,
         inputText: "The text input",
+        disableInputSpellCheck: true,
         btnCancel: true,
         extended: "extended",
         onExtendedResult: res => res.extended = true,
